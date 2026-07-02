@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기민수 — Portfolio</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Malgun Gothic", "Segoe UI", sans-serif;
+    color: #222; background: #fff; line-height: 1.75; margin: 0;
+  }
+  nav {
+    position: sticky; top: 0; background: #fff; border-bottom: 1px solid #eee;
+    padding: 14px 0; z-index: 10;
+  }
+  nav ul {
+    list-style: none; display: flex; justify-content: center; gap: 28px;
+    margin: 0; padding: 0; font-size: 13px;
+  }
+  nav a { color: #555; text-decoration: none; }
+  nav a:hover { color: #111; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 70px 0; }
+  section:first-of-type { padding-top: 90px; }
+  h2 {
+    font-size: 12px; letter-spacing: 2px; color: #999; text-transform: uppercase;
+    margin: 0 0 26px 0; font-weight: 600;
+  }
+  .intro h1 { font-size: 30px; margin: 0 0 6px 0; }
+  .intro .role { font-size: 15px; color: #555; margin-bottom: 14px; }
+  .intro p { font-size: 14px; color: #333; max-width: 560px; }
+  .contact-line { font-size: 12.5px; color: #888; margin-top: 16px; }
+  .contact-line a { color: #888; }
+  .contact-line span:not(:last-child)::after { content: " · "; }
+  .skills-line { font-size: 13px; color: #444; margin-bottom: 8px; }
+  .skills-line b { color: #111; font-weight: 600; display: inline-block; min-width: 90px; }
+  .card { display: flex; gap: 20px; margin-bottom: 46px; align-items: flex-start; }
+  .card img {
+    width: 200px; height: 130px; object-fit: cover; border-radius: 4px;
+    border: 1px solid #eee; flex-shrink: 0;
+  }
+  .card .body h3 { font-size: 16px; margin: 0 0 4px 0; }
+  .card .body .meta { font-size: 11.5px; color: #999; margin-bottom: 8px; }
+  .card .body p { font-size: 13px; color: #444; margin: 0 0 8px 0; }
+  .card .body a { font-size: 12.5px; color: #0969da; text-decoration: none; }
+  hr { border: none; border-top: 1px solid #eee; margin: 0; }
+  footer { text-align: center; padding: 40px 0 70px 0; font-size: 12px; color: #aaa; }
+  @media (max-width: 600px) {
+    .card { flex-direction: column; }
+    .card img { width: 100%; height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#one">Introduction</a></li>
+    <li><a href="#two">Skills</a></li>
+    <li><a href="#three">Portfolio</a></li>
+    <li><a href="#four">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="one" class="wrap intro">
+  <h1>기민수</h1>
+  <div class="role">인프라 · 보안 엔지니어</div>
+  <p>웹·인프라 운영에서 출발해 실전 침해사고를 직접 분석하고 복구하며 보안으로 방향을 잡은 엔지니어입니다. 개발, 인프라 운영, 보안(방어)을 한 사람이 관통하는 것을 강점으로 생각합니다.</p>
+  <div class="contact-line">
+    <span>tkops365@gmail.com</span><span>github.com/ki0915</span><span><a href="https://linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></span>
+  </div>
+</section>
+
+<hr>
+
+<section id="two" class="wrap">
+  <h2>Skills</h2>
+  <div class="skills-line"><b>보안</b>침해사고 대응(IR) · OWASP Top 10 · CIS Docker Benchmark · NIST SP 800-190 · JWT · RBAC · bcrypt</div>
+  <div class="skills-line"><b>인프라</b>AWS EC2/RDS · Docker · Hyper-V · Windows Server / IIS · Nginx · PM2</div>
+  <div class="skills-line"><b>개발</b>TypeScript · Node.js/Express · Angular · React · C#/.NET · Socket.io</div>
+  <div class="skills-line"><b>DB</b>MySQL/MSSQL · Redis · Sequelize · Grafana/Prometheus</div>
+</section>
+
+<hr>
+
+<section id="three" class="wrap">
+  <h2>Portfolio</h2>
+
+  <div class="card">
+    <img src="assets/wiki.png" alt="위키 플랫폼">
+    <div class="body">
+      <h3>위키 플랫폼</h3>
+      <div class="meta">2023 · 개인 프로젝트 · TypeScript, Express, Angular, JWT, Docker</div>
+      <p>인증·권한 통제를 설계 단계부터 넣은 풀스택 프로젝트. 방어 코드를 짠 뒤 직접 SQL 인젝션과 세션 탈취를 시도해 검증했습니다.</p>
+      <a href="https://github.com/ki0915/wiki-backend">github.com/ki0915/wiki-backend →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="assets/kiosk.png" alt="키오스크 주문 시스템">
+    <div class="body">
+      <h3>키오스크 주문 시스템</h3>
+      <div class="meta">2021–2022 · 개인 프로젝트 · C# WPF, Node.js, MSSQL</div>
+      <p>클라이언트–서버–DB를 처음 혼자 설계한 프로젝트. 지금 기준으로는 보안 취약점이 있는 코드지만, 이후 프로젝트에서 어떻게 달라졌는지 보여주기 위해 그대로 남겨두었습니다.</p>
+      <a href="https://github.com/ki0915/Kiosk">github.com/ki0915/Kiosk →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="assets/carrot.png" alt="당근마켓 클론">
+    <div class="body">
+      <h3>당근마켓 클론</h3>
+      <div class="meta">2022 · 개인 프로젝트 · React, Node.js, MySQL, Sequelize</div>
+      <p>React·Node.js 기초를 다진 첫 웹 프로젝트. CORS, JSON 파싱, 무한 API 호출 문제를 직접 디버깅하며 원인을 추적했습니다.</p>
+      <a href="https://github.com/ki0915/carrot-backend">github.com/ki0915/carrot-backend →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="body">
+      <h3>Docker 컨테이너 보안 가이드</h3>
+      <div class="meta">2026 · 단독 저술</div>
+      <p>OWASP Docker Top 10, CIS Docker Benchmark, NIST SP 800-190을 위험도·구현 비용 순으로 재구성한 실무 레퍼런스.</p>
+      <a href="https://github.com/ki0915/Docker-Security-Guide">github.com/ki0915/Docker-Security-Guide →</a>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section id="four" class="wrap">
+  <h2>Contact</h2>
+  <p style="font-size:14px;">tkops365@gmail.com</p>
+</section>
+
+<footer>기민수 · github.com/ki0915</footer>
+
+</body>
+</html>
