@@ -3,138 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기민수 — Portfolio</title>
+<title>기민수 · Infra &amp; Security Engineer</title>
+<meta name="description" content="기민수 — 인프라·보안 엔지니어. 실전 침해사고 3건 대응, 보안 설계와 구축.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; }
+  :root {
+    --bg:      #0e1518;   /* deep slate console */
+    --surface: #13201f;   /* raised panel */
+    --surface2:#182a28;
+    --ink:     #e4ebe7;
+    --muted:   #7f8f8a;
+    --faint:   #56655f;
+    --amber:   #f2b134;   /* WARN — investigative attention (primary) */
+    --cyan:    #54c7cc;   /* INFO — links */
+    --red:     #e5624f;   /* CRITICAL — real incident severity */
+    --green:   #57b98a;   /* RESOLVED */
+    --line:    #223532;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, "Malgun Gothic", "Segoe UI", sans-serif;
-    color: #222; background: #fff; line-height: 1.75; margin: 0;
+    font-family: "IBM Plex Sans KR", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% -5%, rgba(242,177,52,0.06), transparent 40%),
+      radial-gradient(circle at 90% 0%, rgba(84,199,204,0.05), transparent 35%);
   }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  ::selection { background: var(--amber); color: #0e1518; }
+  a { color: var(--cyan); text-decoration: none; }
+
+  .wrap { max-width: 840px; margin: 0 auto; padding: 0 26px; }
+
+  /* NAV */
   nav {
-    position: sticky; top: 0; background: #fff; border-bottom: 1px solid #eee;
-    padding: 14px 0; z-index: 10;
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(14,21,24,0.78); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
   }
-  nav ul {
-    list-style: none; display: flex; justify-content: center; gap: 28px;
-    margin: 0; padding: 0; font-size: 13px;
+  nav .inner { max-width: 840px; margin: 0 auto; padding: 14px 26px;
+    display: flex; justify-content: space-between; align-items: center; }
+  nav .brand { font-family:"IBM Plex Mono"; font-weight: 600; font-size: 14px; color: var(--ink); }
+  nav .brand::before { content: "▸ "; color: var(--amber); }
+  nav ul { list-style: none; display: flex; gap: 22px; }
+  nav a { font-family:"IBM Plex Mono"; color: var(--muted); font-size: 12.5px; }
+  nav a:hover { color: var(--amber); }
+
+  /* HERO — a prompt that returns identity */
+  .hero { padding: 92px 0 60px; }
+  .console {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.35);
   }
-  nav a { color: #555; text-decoration: none; }
-  nav a:hover { color: #111; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-  section { padding: 70px 0; }
-  section:first-of-type { padding-top: 90px; }
-  h2 {
-    font-size: 12px; letter-spacing: 2px; color: #999; text-transform: uppercase;
-    margin: 0 0 26px 0; font-weight: 600;
+  .console .bar {
+    display: flex; align-items: center; gap: 8px; padding: 11px 15px;
+    border-bottom: 1px solid var(--line); background: var(--surface2);
   }
-  .intro h1 { font-size: 30px; margin: 0 0 6px 0; }
-  .intro .role { font-size: 15px; color: #555; margin-bottom: 14px; }
-  .intro p { font-size: 14px; color: #333; max-width: 560px; }
-  .contact-line { font-size: 12.5px; color: #888; margin-top: 16px; }
-  .contact-line a { color: #888; }
-  .contact-line span:not(:last-child)::after { content: " · "; }
-  .skills-line { font-size: 13px; color: #444; margin-bottom: 8px; }
-  .skills-line b { color: #111; font-weight: 600; display: inline-block; min-width: 90px; }
-  .card { display: flex; gap: 20px; margin-bottom: 46px; align-items: flex-start; }
-  .card img {
-    width: 200px; height: 130px; object-fit: cover; border-radius: 4px;
-    border: 1px solid #eee; flex-shrink: 0;
+  .console .bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .dot-r { background: #e5624f; } .dot-y { background: #f2b134; } .dot-g { background: #57b98a; }
+  .console .bar .path { font-family:"IBM Plex Mono"; font-size: 12px; color: var(--faint); margin-left: 10px; }
+  .console .body { padding: 30px 30px 34px; }
+  .console .cmd { font-family:"IBM Plex Mono"; font-size: 14px; color: var(--muted); }
+  .console .cmd .prompt { color: var(--green); }
+  .console .cmd .flag { color: var(--amber); }
+  .ret { margin-top: 18px; }
+  .ret .name {
+    font-family:"IBM Plex Mono"; font-weight: 700; font-size: clamp(38px, 7vw, 62px);
+    line-height: 1.02; letter-spacing: -1px;
   }
-  .card .body h3 { font-size: 16px; margin: 0 0 4px 0; }
-  .card .body .meta { font-size: 11.5px; color: #999; margin-bottom: 8px; }
-  .card .body p { font-size: 13px; color: #444; margin: 0 0 8px 0; }
-  .card .body a { font-size: 12.5px; color: #0969da; text-decoration: none; }
-  hr { border: none; border-top: 1px solid #eee; margin: 0; }
-  footer { text-align: center; padding: 40px 0 70px 0; font-size: 12px; color: #aaa; }
-  @media (max-width: 600px) {
-    .card { flex-direction: column; }
-    .card img { width: 100%; height: auto; }
+  .ret .name .caret {
+    display: inline-block; width: 0.6ch; background: var(--amber); color: transparent;
+    animation: blink 1.1s steps(1) infinite; margin-left: 4px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ret .title { font-family:"IBM Plex Mono"; font-size: 16px; color: var(--cyan); margin-top: 8px; }
+  .ret .quote { font-size: 18px; color: var(--ink); margin-top: 22px; max-width: 560px; line-height: 1.6; }
+  .ret .quote::before { content:"「"; color: var(--amber); }
+  .ret .quote::after  { content:"」"; color: var(--amber); }
+  .ret .desc { font-size: 14.5px; color: var(--muted); margin-top: 16px; max-width: 580px; }
+  .hero-links { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+  .hero-links a {
+    font-family:"IBM Plex Mono"; font-size: 13px; padding: 9px 17px; border-radius: 7px;
+    border: 1px solid var(--line); color: var(--ink); transition: all .18s;
+  }
+  .hero-links a.k { background: var(--amber); color: #0e1518; border-color: var(--amber); font-weight: 600; }
+  .hero-links a.k:hover { background: #ffc65a; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(242,177,52,0.25); }
+  .hero-links a:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* SECTION HEADS — styled as log-facet labels */
+  section { padding: 52px 0; }
+  .eyebrow {
+    font-family:"IBM Plex Mono"; font-size: 12px; letter-spacing: 1px; color: var(--faint);
+    margin-bottom: 28px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+  }
+  .eyebrow b { color: var(--amber); font-weight: 600; }
+
+  /* INCIDENT LOG — the signature */
+  .log-entry {
+    display: grid; grid-template-columns: 128px 1fr; gap: 20px; padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry .gutter { font-family:"IBM Plex Mono"; font-size: 12.5px; }
+  .log-entry .ts { color: var(--faint); display: block; }
+  .log-entry .tag {
+    display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; letter-spacing: .5px;
+  }
+  .tag.resolved  { color: var(--green); border: 1px solid var(--green); }
+  .tag.contained { color: var(--cyan);  border: 1px solid var(--cyan); }
+  .tag.mitigated { color: var(--amber); border: 1px solid var(--amber); }
+  .log-entry h3 { font-size: 16.5px; font-weight: 600; margin-bottom: 5px; }
+  .log-entry p { font-size: 14px; color: var(--muted); }
+
+  /* CAPABILITIES */
+  .cap-row { display: grid; grid-template-columns: 128px 1fr; gap: 20px; padding: 15px 0; align-items: start; }
+  .cap-row .k { font-family:"IBM Plex Mono"; font-size: 12.5px; color: var(--amber); padding-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family:"IBM Plex Mono"; font-size: 12px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 11px;
+    transition: all .18s;
+  }
+  .chip:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* CASE FILES */
+  .cases { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .case {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden; display: flex; flex-direction: column; transition: all .22s;
+  }
+  .case:hover { transform: translateY(-3px); border-color: #315049; box-shadow: 0 16px 36px rgba(0,0,0,0.3); }
+  .case .thumb { height: 138px; background: #0b1113; border-bottom: 1px solid var(--line); overflow: hidden; }
+  .case .thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .92; }
+  .case .thumb.noimg { display: flex; align-items: center; justify-content: center;
+    font-family:"IBM Plex Mono"; color: var(--amber); font-size: 13px; letter-spacing: 1px;
+    background: linear-gradient(135deg,#13201f,#0b1113); }
+  .case .cb { padding: 17px 19px 19px; flex: 1; display: flex; flex-direction: column; }
+  .case .fileid { font-family:"IBM Plex Mono"; font-size: 11px; color: var(--faint); margin-bottom: 6px; }
+  .case h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .case .cmeta { font-family:"IBM Plex Mono"; font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+  .case p { font-size: 13px; color: var(--muted); flex: 1; }
+  .case .clink { font-family:"IBM Plex Mono"; font-size: 12px; color: var(--cyan); margin-top: 13px; }
+  .case .clink:hover { color: var(--amber); }
+
+  /* CONTACT */
+  #contact { padding-bottom: 30px; }
+  .contact-console {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 30px 30px;
+    font-family:"IBM Plex Mono"; font-size: 14px;
+  }
+  .contact-console .line { color: var(--muted); margin: 5px 0; }
+  .contact-console .line .p { color: var(--green); }
+  .contact-console .line .key { color: var(--amber); }
+
+  footer { text-align: center; padding: 40px 0 64px; font-family:"IBM Plex Mono"; font-size: 11.5px; color: var(--faint); }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ret .name .caret { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 640px) {
+    .cases { grid-template-columns: 1fr; }
+    .log-entry, .cap-row { grid-template-columns: 1fr; gap: 6px; }
+    .console .body { padding: 22px 18px 26px; }
+    nav ul { gap: 14px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <ul>
-    <li><a href="#one">Introduction</a></li>
-    <li><a href="#two">Skills</a></li>
-    <li><a href="#three">Portfolio</a></li>
-    <li><a href="#four">Contact</a></li>
-  </ul>
+  <div class="inner">
+    <div class="brand">ki0915</div>
+    <ul>
+      <li><a href="#log">Incidents</a></li>
+      <li><a href="#cap">Skills</a></li>
+      <li><a href="#cases">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </nav>
 
-<section id="one" class="wrap intro">
-  <h1>기민수</h1>
-  <div class="role">인프라 · 보안 엔지니어</div>
-  <p>웹·인프라 운영에서 출발해 실전 침해사고를 직접 분석하고 복구하며 보안으로 방향을 잡은 엔지니어입니다. 개발, 인프라 운영, 보안(방어)을 한 사람이 관통하는 것을 강점으로 생각합니다.</p>
-  <div class="contact-line">
-    <span>tkops365@gmail.com</span><span>github.com/ki0915</span><span><a href="https://linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></span>
-  </div>
-</section>
-
-<hr>
-
-<section id="two" class="wrap">
-  <h2>Skills</h2>
-  <div class="skills-line"><b>보안</b>침해사고 대응(IR) · OWASP Top 10 · CIS Docker Benchmark · NIST SP 800-190 · JWT · RBAC · bcrypt</div>
-  <div class="skills-line"><b>인프라</b>AWS EC2/RDS · Docker · Hyper-V · Windows Server / IIS · Nginx · PM2</div>
-  <div class="skills-line"><b>개발</b>TypeScript · Node.js/Express · Angular · React · C#/.NET · Socket.io</div>
-  <div class="skills-line"><b>DB</b>MySQL/MSSQL · Redis · Sequelize · Grafana/Prometheus</div>
-</section>
-
-<hr>
-
-<section id="three" class="wrap">
-  <h2>Portfolio</h2>
-
-  <div class="card">
-    <img src="assets/wiki.png" alt="위키 플랫폼">
+<header class="wrap hero">
+  <div class="console">
+    <div class="bar">
+      <i class="dot-r"></i><i class="dot-y"></i><i class="dot-g"></i>
+      <span class="path">ki@soc: ~/career</span>
+    </div>
     <div class="body">
-      <h3>위키 플랫폼</h3>
-      <div class="meta">2023 · 개인 프로젝트 · TypeScript, Express, Angular, JWT, Docker</div>
-      <p>인증·권한 통제를 설계 단계부터 넣은 풀스택 프로젝트. 방어 코드를 짠 뒤 직접 SQL 인젝션과 세션 탈취를 시도해 검증했습니다.</p>
-      <a href="https://github.com/ki0915/wiki-backend">github.com/ki0915/wiki-backend →</a>
+      <div class="cmd"><span class="prompt">$</span> whoami <span class="flag">--story</span></div>
+      <div class="ret">
+        <div class="name">기민수<span class="caret">_</span></div>
+        <div class="title">infra &amp; security engineer</div>
+        <div class="quote">침해가 뚫린 이유를 로그로 끝까지 쫓아가는 사람</div>
+        <p class="desc">웹·인프라 운영에서 출발해 실전 침해사고 3건을 현장에서 직접 분석하고 복구했습니다. 개발, 인프라 운영, 방어를 한 사람이 관통하는 것을 강점으로 생각합니다.</p>
+        <div class="hero-links">
+          <a class="k" href="#cases">프로젝트 보기</a>
+          <a href="https://github.com/ki0915">GitHub</a>
+          <a href="mailto:tkops365@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="log" class="wrap reveal">
+  <div class="eyebrow"><b>[ incident_log ]</b> — 실전 대응 이력 (최신순)</div>
+
+  <div class="log-entry">
+    <div class="gutter">
+      <span class="ts">2023.04<br>–2025.03</span>
+      <span class="tag contained">ONGOING</span>
+    </div>
+    <div>
+      <h3>미디어솔루션 — 웹·시스템·보안 엔지니어</h3>
+      <p>삼성서울병원·코엑스·파라다이스 호텔 부산·인터컨티넨탈 등 4개 고객사의 키오스크 CMS·운영 서버를 단독 관리. 침해사고 3건을 현장에서 직접 대응하고 Docker·AWS 기반으로 인프라를 현대화했습니다.</p>
     </div>
   </div>
 
-  <div class="card">
-    <img src="assets/kiosk.png" alt="키오스크 주문 시스템">
-    <div class="body">
-      <h3>키오스크 주문 시스템</h3>
-      <div class="meta">2021–2022 · 개인 프로젝트 · C# WPF, Node.js, MSSQL</div>
-      <p>클라이언트–서버–DB를 처음 혼자 설계한 프로젝트. 지금 기준으로는 보안 취약점이 있는 코드지만, 이후 프로젝트에서 어떻게 달라졌는지 보여주기 위해 그대로 남겨두었습니다.</p>
-      <a href="https://github.com/ki0915/Kiosk">github.com/ki0915/Kiosk →</a>
+  <div class="log-entry">
+    <div class="gutter">
+      <span class="ts">2023.10</span>
+      <span class="tag resolved">RESOLVED</span>
+    </div>
+    <div>
+      <h3>코엑스 CMS 서버 해킹 — 포맷 없이 살린 복구</h3>
+      <p>KISA 통보로 침해를 인지, 웹·DB 서버의 권한 에스컬레이션 경로를 로그 추적으로 직접 규명. perflog에서 브루트포스 흔적을 찾아 공격 기간(2022.11–2023.05)을 특정하고, 포맷 대신 계정 복구를 택해 약 1개월의 재구축 시간을 아꼈습니다.</p>
     </div>
   </div>
 
-  <div class="card">
-    <img src="assets/carrot.png" alt="당근마켓 클론">
-    <div class="body">
-      <h3>당근마켓 클론</h3>
-      <div class="meta">2022 · 개인 프로젝트 · React, Node.js, MySQL, Sequelize</div>
-      <p>React·Node.js 기초를 다진 첫 웹 프로젝트. CORS, JSON 파싱, 무한 API 호출 문제를 직접 디버깅하며 원인을 추적했습니다.</p>
-      <a href="https://github.com/ki0915/carrot-backend">github.com/ki0915/carrot-backend →</a>
+  <div class="log-entry">
+    <div class="gutter">
+      <span class="ts">2024</span>
+      <span class="tag resolved">RESOLVED</span>
+    </div>
+    <div>
+      <h3>크립토재커 침해대응 및 AWS 이관</h3>
+      <p>서비스 다운을 탐지해 악성코드를 제거하고, 하드코딩 스크립트와 ASP.NET 4.7.1 구버전을 CVE 대조로 원인 특정. Web→EC2, DB→RDS 이관으로 복구하고 재발을 차단했습니다.</p>
     </div>
   </div>
 
-  <div class="card">
-    <div class="body">
-      <h3>Docker 컨테이너 보안 가이드</h3>
-      <div class="meta">2026 · 단독 저술</div>
-      <p>OWASP Docker Top 10, CIS Docker Benchmark, NIST SP 800-190을 위험도·구현 비용 순으로 재구성한 실무 레퍼런스.</p>
-      <a href="https://github.com/ki0915/Docker-Security-Guide">github.com/ki0915/Docker-Security-Guide →</a>
+  <div class="log-entry">
+    <div class="gutter">
+      <span class="ts">2024.12<br>–2025.01</span>
+      <span class="tag mitigated">MITIGATED</span>
+    </div>
+    <div>
+      <h3>랜섬웨어 대비 백업 인프라 — 구축 직후 실전 검증</h3>
+      <p>WORM 스토리지·Hyper-V·AWS로 서버 이중화와 불변 백업을 사전 설계. 구축 직후 실제 랜섬웨어 공격이 발생했을 때, 담당자 부재 상황에서도 RPO 0 · RTO 1일로 복구했습니다.</p>
     </div>
   </div>
 </section>
 
-<hr>
-
-<section id="four" class="wrap">
-  <h2>Contact</h2>
-  <p style="font-size:14px;">tkops365@gmail.com</p>
+<section id="cap" class="wrap reveal">
+  <div class="eyebrow"><b>[ capabilities ]</b> — 다루는 도구와 도메인</div>
+  <div class="cap-row"><div class="k">security</div><div class="chips">
+    <span class="chip">침해사고 대응(IR)</span><span class="chip">OWASP Top 10</span><span class="chip">CIS Docker Benchmark</span><span class="chip">NIST SP 800-190</span><span class="chip">JWT</span><span class="chip">RBAC</span><span class="chip">bcrypt</span>
+  </div></div>
+  <div class="cap-row"><div class="k">infra</div><div class="chips">
+    <span class="chip">AWS EC2/RDS</span><span class="chip">Docker</span><span class="chip">Hyper-V</span><span class="chip">Windows Server / IIS</span><span class="chip">Nginx</span><span class="chip">PM2</span>
+  </div></div>
+  <div class="cap-row"><div class="k">dev</div><div class="chips">
+    <span class="chip">TypeScript</span><span class="chip">Node.js / Express</span><span class="chip">Angular</span><span class="chip">React</span><span class="chip">C# / .NET</span><span class="chip">Socket.io</span>
+  </div></div>
+  <div class="cap-row"><div class="k">data / mon</div><div class="chips">
+    <span class="chip">MySQL / MSSQL</span><span class="chip">Redis</span><span class="chip">Sequelize</span><span class="chip">Grafana</span><span class="chip">Prometheus</span>
+  </div></div>
+  <div class="cap-row"><div class="k">cert</div><div class="chips">
+    <span class="chip">정보보안기사</span><span class="chip">CISA (Associate)</span><span class="chip">정보처리산업기사</span><span class="chip">AZ-900</span>
+  </div></div>
 </section>
 
-<footer>기민수 · github.com/ki0915</footer>
+<section id="cases" class="wrap reveal">
+  <div class="eyebrow"><b>[ case_files ]</b> — 직접 만든 것들</div>
+  <div class="cases">
+    <div class="case">
+      <div class="thumb"><img src="assets/wiki.png" alt="위키 플랫폼"></div>
+      <div class="cb">
+        <div class="fileid">CASE-01</div>
+        <h3>위키 플랫폼</h3>
+        <div class="cmeta">2023 · TS · Express · Angular · JWT · Docker</div>
+        <p>인증·권한 통제를 설계 단계부터 넣은 풀스택 프로젝트. 방어 코드를 짠 뒤 직접 SQL 인젝션과 세션 탈취를 시도해 검증했습니다.</p>
+        <a class="clink" href="https://github.com/ki0915/wiki-backend">→ wiki-backend</a>
+      </div>
+    </div>
+    <div class="case">
+      <div class="thumb"><img src="assets/kiosk.png" alt="키오스크 주문 시스템"></div>
+      <div class="cb">
+        <div class="fileid">CASE-02</div>
+        <h3>키오스크 주문 시스템</h3>
+        <div class="cmeta">2021–22 · C# WPF · Node.js · MSSQL</div>
+        <p>클라이언트–서버–DB를 처음 혼자 설계한 프로젝트. 보안 취약점이 있는 초기 코드지만, 이후 어떻게 달라졌는지 보여주려 그대로 남겨두었습니다.</p>
+        <a class="clink" href="https://github.com/ki0915/Kiosk">→ Kiosk</a>
+      </div>
+    </div>
+    <div class="case">
+      <div class="thumb"><img src="assets/carrot.png" alt="당근마켓 클론"></div>
+      <div class="cb">
+        <div class="fileid">CASE-03</div>
+        <h3>당근마켓 클론</h3>
+        <div class="cmeta">2022 · React · Node.js · MySQL · Sequelize</div>
+        <p>React·Node.js 기초를 다진 첫 웹 프로젝트. CORS, JSON 파싱, 무한 API 호출 문제를 직접 디버깅하며 원인을 추적했습니다.</p>
+        <a class="clink" href="https://github.com/ki0915/carrot-backend">→ carrot-backend</a>
+      </div>
+    </div>
+    <div class="case">
+      <div class="thumb noimg">🐳 DOCKER SECURITY</div>
+      <div class="cb">
+        <div class="fileid">CASE-04</div>
+        <h3>Docker 컨테이너 보안 가이드</h3>
+        <div class="cmeta">2026 · 단독 저술</div>
+        <p>OWASP Docker Top 10, CIS Benchmark, NIST SP 800-190을 위험도·구현 비용 순으로 재구성한 실무 레퍼런스.</p>
+        <a class="clink" href="https://github.com/ki0915/Docker-Security-Guide">→ Docker-Security-Guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="wrap reveal">
+  <div class="eyebrow"><b>[ contact ]</b> — 연락</div>
+  <div class="contact-console">
+    <div class="line"><span class="p">$</span> cat contact.txt</div>
+    <div class="line"><span class="key">email </span>: <a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a></div>
+    <div class="line"><span class="key">github</span>: <a href="https://github.com/ki0915">github.com/ki0915</a></div>
+    <div class="line"><span class="key">linkin</span>: <a href="https://linkedin.com/in/minsoo-ki-388b2437b">linkedin.com/in/minsoo-ki-388b2437b</a></div>
+  </div>
+</section>
+
+<footer>ki@soc:~/career$ logout — © 2026 기민수</footer>
+
+<script>
+  const obs = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 
 </body>
 </html>
