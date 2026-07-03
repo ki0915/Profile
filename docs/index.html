@@ -286,9 +286,19 @@
   <div class="eyebrow"><b>[ case_files ]</b> — 직접 만든 것들</div>
   <div class="cases">
     <div class="case">
+      <div class="thumb noimg">🛡️ ETK-SCANNER</div>
+      <div class="cb">
+        <div class="fileid">CASE-01 · 대표작</div>
+        <h3>ETK-Scanner — 비용 인식 LLM 보안 스캐너</h3>
+        <div class="cmeta">2026 · Python · Claude(계층화) · SARIF · GitHub Actions</div>
+        <p>정적 분석(AST)으로 후보를 좁히고 저가→고가 모델로 계층 검증하는 파이프라인. 발견→수정→실제 HTTP 실증→CI 배포 차단까지 이었습니다. SecurityEval 121건 벤치마크: 재현율 91.7%, 샘플당 0.55원(정밀도 미측정 한계 공개).</p>
+        <a class="clink" href="https://github.com/ki0915/etk-scanner">→ etk-scanner</a>
+      </div>
+    </div>
+    <div class="case">
       <div class="thumb"><img src="assets/wiki.png" alt="위키 플랫폼"></div>
       <div class="cb">
-        <div class="fileid">CASE-01</div>
+        <div class="fileid">CASE-02</div>
         <h3>위키 플랫폼</h3>
         <div class="cmeta">2023 · TS · Express · Angular · JWT · Docker</div>
         <p>인증·권한 통제를 설계 단계부터 넣은 풀스택 프로젝트. 방어 코드를 짠 뒤 직접 SQL 인젝션과 세션 탈취를 시도해 검증했습니다.</p>
@@ -298,7 +308,7 @@
     <div class="case">
       <div class="thumb"><img src="assets/kiosk.png" alt="키오스크 주문 시스템"></div>
       <div class="cb">
-        <div class="fileid">CASE-02</div>
+        <div class="fileid">CASE-03</div>
         <h3>키오스크 주문 시스템</h3>
         <div class="cmeta">2021–22 · C# WPF · Node.js · MSSQL</div>
         <p>클라이언트–서버–DB를 처음 혼자 설계한 프로젝트. 보안 취약점이 있는 초기 코드지만, 이후 어떻게 달라졌는지 보여주려 그대로 남겨두었습니다.</p>
@@ -308,7 +318,7 @@
     <div class="case">
       <div class="thumb"><img src="assets/carrot.png" alt="당근마켓 클론"></div>
       <div class="cb">
-        <div class="fileid">CASE-03</div>
+        <div class="fileid">CASE-04</div>
         <h3>당근마켓 클론</h3>
         <div class="cmeta">2022 · React · Node.js · MySQL · Sequelize</div>
         <p>React·Node.js 기초를 다진 첫 웹 프로젝트. CORS, JSON 파싱, 무한 API 호출 문제를 직접 디버깅하며 원인을 추적했습니다.</p>
@@ -318,7 +328,7 @@
     <div class="case">
       <div class="thumb noimg">🐳 DOCKER SECURITY</div>
       <div class="cb">
-        <div class="fileid">CASE-04</div>
+        <div class="fileid">CASE-05</div>
         <h3>Docker 컨테이너 보안 가이드</h3>
         <div class="cmeta">2026 · 단독 저술</div>
         <p>OWASP Docker Top 10, CIS Benchmark, NIST SP 800-190을 위험도·구현 비용 순으로 재구성한 실무 레퍼런스.</p>
