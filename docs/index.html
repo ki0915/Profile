@@ -100,10 +100,10 @@
           <a class="text-link" href="https://github.com/ki0915/Mcp-Guard" target="_blank" rel="noreferrer">코드와 검증 자료 보기 ↗</a>
         </div>
         <div class="product-ui guard-ui" aria-label="Mcp-Guard 정책 검사 화면 모형">
-          <div class="ui-bar"><span>MCP TRAFFIC INSPECTOR</span><i></i><i></i><i></i></div>
+          <div class="ui-bar"><span>MCP TRAFFIC INSPECTOR · 화면 모형</span><i></i><i></i><i></i></div>
           <div class="ui-body">
             <div class="traffic-rail">
-              <span class="active">request_042</span><span>request_041</span><span>request_040</span><span>request_039</span>
+              <span class="active">sample_request</span><span>tool_response</span><span>policy_event</span><span>audit_record</span>
             </div>
             <div class="traffic-main">
               <div class="request-head"><span>tools/call</span><b>BLOCKED</b></div>
@@ -139,9 +139,9 @@
           <a class="text-link" href="https://github.com/ki0915/etk-scanner" target="_blank" rel="noreferrer">파이프라인과 SARIF 구현 보기 ↗</a>
         </div>
         <div class="product-ui scanner-ui" aria-label="ETK-Scanner 분석 파이프라인 화면 모형">
-          <div class="ui-bar"><span>SECURITY PIPELINE / RUN 184</span><i></i><i></i><i></i></div>
+          <div class="ui-bar"><span>SECURITY PIPELINE · 화면 모형</span><i></i><i></i><i></i></div>
           <div class="pipeline">
-            <div class="pipe-step done"><b>01</b><span>Static scan</span><small>243 candidates</small></div>
+            <div class="pipe-step done"><b>01</b><span>Static scan</span><small>candidate queue</small></div>
             <div class="pipe-link"></div>
             <div class="pipe-step done"><b>02</b><span>LLM review</span><small>budget bounded</small></div>
             <div class="pipe-link"></div>
@@ -150,7 +150,7 @@
           <div class="finding-panel">
             <div class="finding-title"><span>HIGH</span><strong>Authorization check may be bypassed</strong></div>
             <div class="code-lines"><i style="--w:84%"></i><i style="--w:71%"></i><i class="risk" style="--w:93%"></i><i style="--w:58%"></i></div>
-            <div class="finding-foot"><span>confidence 0.92</span><span>CWE mapped</span><span>SARIF emitted</span></div>
+            <div class="finding-foot"><span>reviewed finding</span><span>CWE mapped</span><span>SARIF emitted</span></div>
           </div>
         </div>
       </article>
@@ -169,18 +169,18 @@
           <span class="text-link muted-link">로컬 개발 중 · 공개 저장소 미확인</span>
         </div>
         <div class="product-ui evidence-ui" aria-label="EvidScope 증거 검토 화면 모형">
-          <div class="ui-bar"><span>EVIDENCE WORKBENCH</span><i></i><i></i><i></i></div>
+          <div class="ui-bar"><span>EVIDENCE WORKBENCH · 화면 모형</span><i></i><i></i><i></i></div>
           <div class="coverage-head">
-            <div><span>REGISTERED</span><strong>12</strong></div>
-            <div><span>RECEIVED</span><strong>08</strong></div>
-            <div><span>REVIEWED</span><strong>06</strong></div>
+            <div><span>REGISTERED</span><strong>자산</strong></div>
+            <div><span>RECEIVED</span><strong>기록</strong></div>
+            <div><span>REVIEWED</span><strong>검토</strong></div>
           </div>
           <div class="event-chain">
-            <div><b>01</b><span>agent.action</span><small>hash 8d3…a91</small></div>
-            <div><b>02</b><span>tool.result</span><small>hash 7fa…123</small></div>
+            <div><b>01</b><span>agent.action</span><small>hash linked</small></div>
+            <div><b>02</b><span>tool.result</span><small>hash linked</small></div>
             <div class="review"><b>03</b><span>human.review</span><small>needs context</small></div>
           </div>
-          <div class="review-row"><span>Evidence coverage</span><b>6 / 12</b></div>
+          <div class="review-row"><span>Evidence coverage</span><b>scope based</b></div>
           <div class="coverage-track"><span></span></div>
         </div>
       </article>
