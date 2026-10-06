@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EvidScope — AI가 한 일과 그 근거를 사람이 검토하게 돕는 감사 증거 파일럿 | 기민수 포트폴리오</title><meta name="description" content="AI 행동, 도구 결과, 당시 권한과 정책 버전, 원본 문서, 사람의 판단을 서명 원장으로 이어 붙여, 감사하는 사람이 서로 대조할 수 있게 한 로컬 파일럿입니다.">
+<title>EvidScope — 한국 AI 기본법 기준으로 AI 행동과 근거를 대조하는 감사 증거 파일럿 | 기민수 포트폴리오</title><meta name="description" content="AI 행동, 도구 결과, 당시 권한과 정책 버전, 원본 문서, 사람의 판단을 서명 원장으로 이어 붙여, 감사하는 사람이 서로 대조할 수 있게 한 로컬 파일럿입니다.">
 <meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="../site.css"></head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
@@ -10,7 +10,7 @@
 </div></header>
 <main id="main" class="wrap">
 <div class="crumb"><a href="../index.html#g-ai">← 프로젝트 목록</a></div>
-<header class="p-head"><div class="grp">AI 보안 프로젝트</div><h1>EvidScope</h1><p class="sub">AI가 한 일과 그 근거를 사람이 검토하게 돕는 감사 증거 파일럿</p><p class="one">AI 행동, 도구 결과, 당시 권한과 정책 버전, 원본 문서, 사람의 판단을 서명 원장으로 이어 붙여, 감사하는 사람이 서로 대조할 수 있게 한 로컬 파일럿입니다.</p>
+<header class="p-head"><div class="grp">AI 보안 프로젝트</div><h1>EvidScope</h1><p class="sub">한국 AI 기본법 기준으로 AI 행동과 근거를 대조하는 감사 증거 파일럿</p><p class="one">AI 행동, 도구 결과, 당시 권한과 정책 버전, 원본 문서, 사람의 판단을 서명 원장으로 이어 붙여, 감사하는 사람이 서로 대조할 수 있게 한 로컬 파일럿입니다.</p>
 <p class="repo">저장소 <a href="https://github.com/ki0915/EvidScope">github.com/ki0915/EvidScope</a></p></header>
 <div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>실행 로그만으로는 AI가 실제로 무엇을 했고, 그때 권한이 있었는지, 어떤 근거를 검토했는지 설명하기 어렵습니다. EvidScope는 행동과 근거를 서명 원장으로 이어 붙이고, 확인하지 못한 사실은 unknown으로 남겨 "등록됨"과 "확인됨"을 섞지 않습니다. 실행을 승인하거나 차단하는 엔진이 아니라, 내부감사나 보안 운영 담당자가 근거를 확인하고 판단을 기록하는 도구입니다. 문제와 조건은 제가 정했고 설계와 구현은 AI와 함께 했습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2026.09 – 2026.10</td></tr><tr><th scope="row">역할</th><td>문제 정의, 우선순위와 모델, 비용 조건 결정, 최종 검토 (AI 협업 개발)</td></tr><tr><th scope="row">환경</th><td>개인 프로젝트, 로컬 파일럿 (개발 소스 v0.1.2)</td></tr><tr><th scope="row">기술</th><td>Node.js 24, SQLite WAL, Ed25519 서명 원장, HMAC과 nonce 출처 인증, OIDC, Docker, Kubernetes</td></tr><tr><th scope="row">저장소</th><td><a href="https://github.com/ki0915/EvidScope">github.com/ki0915/EvidScope</a></td></tr></table></section></div>
 <article class="body">
@@ -23,8 +23,11 @@
 <p>수집(ingress), 감사 화면(audit), 저장(vault), 분석(worker)으로 나눴습니다. 최종 인증과 원장은 vault만 갖고, worker는 claim과 lease, version 방식으로 분석합니다. 출처는 HMAC과 nonce로 인증하고, 원장은 Ed25519로 서명하며, 내보낸 증적은 별도 공개키와 checkpoint, hash로 독립 검증합니다.</p>
 <h3>문서가 있다는 것과 근거가 충분하다는 것을 구분</h3>
 <p>근거 문서는 원본 파일(최대 4MiB)을 암호화해 보관하고 hash, 복구 가능성, 모델, 목적, 정책 버전을 함께 대조합니다. 문서가 손상되거나 버전이 바뀌면 재검토로 돌리고, 근거가 부족한 보완 과제는 사람이 충족이라고 입력해도 종결하지 않습니다.</p>
+<h3>한국 AI 기본법 요구사항</h3>
+<p>AI 기본법(법률 제21311호)과 시행령(대통령령 제36580호)의 제30~36조, 제40조를 요구사항 18개로 옮겼습니다. 생성형 결과와 합성물 표시(제31조), 고영향 AI 판단(제33조), 고영향 사업자 책무인 위험관리, 설명, 이용자 보호, 사람 감독, 조치 문서 5년 보관(제34조), 영향평가(제35조), 국내대리인(제36조), 기관 명령 대응(제40조)을 따로 검사합니다.</p>
+<p>금융업이라는 이유만으로 고영향으로 정하지 않고 실제 영향과 위험을 확인하게 했습니다. 외부 AI 대출, 신용평가 서비스를 쓰는 은행이 공급사 조치를 인정받는 범위도 법이 정한 항목 안으로 제한했습니다. 확인하지 못한 사실은 unknown으로 남기고, 적용 여부와 법적 판단은 사람이 내립니다.</p>
 <h3>요구사항과 운영 기능</h3>
-<p>요구사항 31개(한국 18개)와 기술 검사 23종을 다루고, 적용 후보와 사람의 최종 판단을 구분합니다. OIDC 세션 회수, tenant 격리, 암호화 백업과 새 경로 복구를 넣었고, 보고서는 서명으로 고정합니다.</p>
+<p>전체 요구사항 31개와 기술 검사 23종을 다루고, 적용 후보와 사람의 최종 판단을 구분합니다. OIDC 세션 회수, tenant 격리, 암호화 백업과 새 경로 복구를 넣었고, 보고서는 서명으로 고정합니다.</p>
 
 <h2>해결한 문제와 결과</h2>
 <h3>원장 재검증 병목</h3>
@@ -35,6 +38,8 @@
 <p class="note">i7-12700F, RAM 32GiB, Windows, SQLite WAL, writer 1개와 worker 2개에서 한 번 돌린 로컬 시험입니다. 운영 SLA가 아닙니다.</p>
 <h3>감사자가 판정을 바꿀 수 있던 권한 결함</h3>
 <p>실제 HTTP 검토에서 읽기 권한만 있어야 할 감사자가 거버넌스 시스템과 평가, 과제를 바꿀 수 있는 결함을 찾았습니다. vault의 공통 권한 경계에서 reviewer나 admin을 요구하게 고쳤고, gateway와 vault 직접 요청 30건이 거부되고 서명 상태가 바뀌지 않는 것을 회귀 시험으로 고정했습니다.</p>
+<h3>금융 합성 사례 재현</h3>
+<p>AI 대출과 신용평가를 쓰는 금융사를 가정한 합성 사례 6건(정상, 모델 변경, 목적 변경, 공급사 문서 개정, 감독 계획 개정, 감독 수행 기록 누락)을 HMAC 접수, 서명 원장, 보고서까지 거쳐 돌렸고 6건 모두 기대한 판정이 나왔습니다. 근거가 부족한 과제는 화면에서 종결하려 해도 서버가 거부합니다.</p>
 <h3>검증 현황</h3>
 <div class="tbl"><table><tr class="hd"><th>대상</th><th>결과</th></tr>
 <tr><td data-label="대상">v0.1.1 설치본 전체 회귀</td><td data-label="결과" class="num">758/758 통과</td></tr>
