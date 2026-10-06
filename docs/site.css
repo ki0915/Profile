@@ -8,7 +8,7 @@
 @font-face{font-family:"Serif KR";font-weight:700;font-display:swap;src:url(fonts/noto-serif-kr-korean-700-normal.woff2) format("woff2");unicode-range:U+1100-11FF,U+3000-303F,U+3130-318F,U+AC00-D7AF,U+00B7}
 @font-face{font-family:"Plex Mono";font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
 
-:root{--ink:#141414;--text:#2b2b2b;--gray:#666;--light:#a6a6a6;--hair:#dcdcdc;--wash:#eef5f5;--accent:#0b6b72}
+:root{--ink:#141414;--text:#2b2b2b;--gray:#666;--light:#a6a6a6;--hair:#dcdcdc;--wash:#eef1f7;--accent:#1f3a68}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--text);font-family:Pretendard,system-ui,sans-serif;font-size:17px;line-height:1.72;
