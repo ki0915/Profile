@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mcp-Guard — LLM과 MCP 통신의 개인정보 유출 방지(DLP) 프록시 | 기민수 포트폴리오</title><meta name="description" content="LLM API와 MCP 도구로 나가는 요청에서 주민등록번호, 카드번호, API 키 같은 개인정보(PII)와 시크릿을 찾아 가리거나 막는 Python 프록시입니다.">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="../site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="../index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="../index.html#projects">프로젝트</a><a href="../index.html#career">경력과 자격</a><a href="../resume-ko.pdf">이력서 PDF</a><a href="../portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="crumb"><a href="../index.html#g-ai">← 프로젝트 목록</a></div>
+<header class="p-head"><div class="grp">AI 보안 프로젝트</div><h1>Mcp-Guard</h1><p class="sub">LLM과 MCP 통신의 개인정보 유출 방지(DLP) 프록시</p><p class="one">LLM API와 MCP 도구로 나가는 요청에서 주민등록번호, 카드번호, API 키 같은 개인정보(PII)와 시크릿을 찾아 가리거나 막는 Python 프록시입니다.</p>
+<p class="repo">저장소 <a href="https://github.com/ki0915/Mcp-Guard">github.com/ki0915/Mcp-Guard</a></p></header>
+<div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>LLM이나 MCP 도구를 쓰면 주민등록번호나 API 키가 프롬프트에 섞여 외부로 나갈 수 있는데, 네트워크 경계의 HTTP 프록시는 MCP stdio 통신을 보지 못합니다. 그래서 HTTP 요청과 응답, SSE, stdio JSON-RPC를 모두 검사해 원문을 가리거나 전송을 막는 DLP 프록시를 만들었습니다. 우회 표현을 정규화하자 합성 우회 표본 탐지가 10/60에서 56/60으로 늘었고, 정상 표본 30건의 오탐은 0건이었습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2026.07</td></tr><tr><th scope="row">역할</th><td>정책과 탐지 설계, 구현, 검증 (1인)</td></tr><tr><th scope="row">환경</th><td>개인 프로젝트, 합성 데이터만 사용, 로컬 k3d 배포</td></tr><tr><th scope="row">기술</th><td>Python, HTTP 리버스 프록시, MCP stdio JSON-RPC, SSE, Docker, Helm, k3d, Prometheus</td></tr><tr><th scope="row">저장소</th><td><a href="https://github.com/ki0915/Mcp-Guard">github.com/ki0915/Mcp-Guard</a></td></tr></table></section></div>
+<article class="body">
+<h2>배경</h2>
+<p>생성형 AI를 업무에 쓰면 사람이 붙여 넣은 문서나 로그에 개인정보와 시크릿이 섞이기 쉽습니다. MCP 서버는 HTTP가 아니라 표준 입출력(stdio)으로 JSON-RPC 메시지를 주고받는 경우가 많아서, 네트워크 경계에 둔 프록시로는 내용을 볼 수 없습니다.</p>
+<p>정규식만으로 찾으면 띄어 쓴 주민번호나 전각 숫자, Base64로 감싼 값이 그대로 빠져나갑니다. 반대로 숫자 모양만 보고 막으면 정상 요청까지 막혀서 아무도 쓰지 않는 도구가 됩니다.</p>
+
+<h2>한 일</h2>
+<figure><a href="../assets/mcp-guard-structure.png"><img src="../assets/mcp-guard-structure.png" width="2231" height="757" alt="Mcp-Guard 구조도. 왼쪽 호출하는 쪽(HTTP 애플리케이션, MCP 클라이언트)에서 가운데 검사 경계(입구 어댑터, 검사용 사본, 탐지, 정책 결정, 증적)를 거쳐 오른쪽 외부 LLM API와 로컬 MCP 서버로 오가는 흐름"></a><figcaption>호출하는 쪽과 외부 LLM 사이에 놓이는 검사 경계. 저장소의 구조도를 이 페이지에 맞게 다시 그렸습니다.</figcaption></figure>
+<h3>두 경로를 같은 정책으로 검사</h3>
+<p>HTTP 리버스 프록시는 요청과 응답 본문, URL path와 query, SSE 이벤트를 검사합니다. stdio 어댑터는 MCP 클라이언트와 서버 사이에서 줄 단위 JSON-RPC 요청과 응답을 읽어 같은 정책을 적용합니다.</p>
+<h3>탐지 규칙과 기본 정책</h3>
+<div class="tbl"><table><tr class="hd"><th>대상</th><th>판별 방법</th><th>기본 정책</th></tr>
+<tr><td data-label="대상">주민등록번호</td><td data-label="판별 방법">날짜 타당성과 mod-11 체크섬</td><td data-label="기본 정책">체크섬 일치 시 차단</td></tr>
+<tr><td data-label="대상">카드번호</td><td data-label="판별 방법">14~16자리, IIN 첫 숫자, Luhn 검사</td><td data-label="기본 정책">차단</td></tr>
+<tr><td data-label="대상">계좌번호</td><td data-label="판별 방법">숫자 그룹과 앞뒤 40자 안의 은행 문맥</td><td data-label="기본 정책">마스킹</td></tr>
+<tr><td data-label="대상">API 키와 시크릿</td><td data-label="판별 방법">알려진 접두어, JWT와 PEM 형식, 엔트로피</td><td data-label="기본 정책">차단</td></tr>
+<tr><td data-label="대상">문서 등급</td><td data-label="판별 방법">대외비, CONFIDENTIAL 같은 표기</td><td data-label="기본 정책">경보</td></tr></table></div>
+<p>이 밖에 전화번호, 조직이 지정한 보호값(원문 또는 SHA-256 해시), 사용자 규칙도 정책에 넣을 수 있습니다.</p>
+<h3>우회 표현 정규화</h3>
+<p>처음 버전은 원문 그대로만 검사했고, 띄어 쓴 주민번호나 전각 숫자는 그냥 통과했습니다. 탐지 전에 원문 위치를 유지한 파생 문자열을 만들어 검사하도록 바꿨습니다. 마스킹은 파생 문자열이 아니라 원래 입력의 해당 범위에 적용합니다.</p>
+<ul>
+<li>유니코드 NFKC 정규화로 전각 숫자와 문자를 일반 문자로 바꿉니다.</li>
+<li>숫자 사이에 끼운 공백과 zero-width 문자를 걷어 냅니다.</li>
+<li>Base64는 한 번만 디코딩합니다. 후보 64개, 토큰 4,096자, 디코딩 총량 64KiB로 상한을 둬서 검사 자체가 자원을 잡아먹지 않게 했습니다.</li>
+</ul>
+<h3>실패했을 때와 운영</h3>
+<p>검사 중 오류가 나면 요청을 통과시키지 않고 막습니다(fail-closed). 감사 로그에는 탐지 결과만 남기고 민감한 원값은 기록하지 않습니다. 정책은 스키마로 검증하고 시크릿은 설정과 분리했으며, 업무상 필요한 예외는 만료 시간이 있는 허용 목록(TTL allowlist)으로만 열 수 있습니다. 처리 결과는 Prometheus 지표로 내보냅니다.</p>
+<p>Dockerfile과 Helm 차트, CI 워크플로를 만들었고, 로컬 k3d 클러스터에 배포해 pod 2개가 Running 상태로 뜨는 것까지 확인했습니다.</p>
+
+<h2>결과</h2>
+<div class="tbl"><table><tr class="hd"><th>지표</th><th>결과</th><th>조건</th></tr>
+<tr><td data-label="지표">내장 회귀 테스트</td><td data-label="결과" class="num">양성 35/35, 오탐 0/14</td><td data-label="조건">합성 한국 개인정보와 시크릿</td></tr>
+<tr><td data-label="지표">우회 표본 탐지</td><td data-label="결과" class="num">10/60 → 56/60</td><td data-label="조건">원문만 검사한 경우 대비 정규화 적용, 재현율 16.667% → 93.333%</td></tr>
+<tr><td data-label="지표">정상 표본 오탐</td><td data-label="결과" class="num">0/30 → 0/30</td><td data-label="조건">고정 정상 표본 30건</td></tr>
+<tr><td data-label="지표">스캔 추가 지연</td><td data-label="결과" class="num">평균 0.0440ms, p95 0.0774ms</td><td data-label="조건">스캔 모드별 18,000회</td></tr>
+<tr><td data-label="지표">HTTP 프록시 추가 지연</td><td data-label="결과" class="num">평균 3.10ms, p95 3.65ms</td><td data-label="조건">1,102B 요청, localhost 200회 짝 비교</td></tr>
+<tr><td data-label="지표">스트리밍 첫 이벤트(TTFB)</td><td data-label="결과" class="num">37.158ms → 4.892ms</td><td data-label="조건">SSE 25ms 간격, 모드별 100회</td></tr>
+<tr><td data-label="지표">테스트</td><td data-label="결과" class="num">165 통과, 1 건너뜀</td><td data-label="조건">건너뛴 1건은 Windows에서 돌지 않는 POSIX 권한 테스트</td></tr></table></div>
+<h3>아직 못 막는 것</h3>
+<ul>
+<li>우회 표본 60건 중 4건은 아직 놓칩니다. 이 4건은 테스트에 그대로 남겨 두었습니다.</li>
+<li>응답을 차단해도 이미 나간 요청은 되돌릴 수 없습니다.</li>
+<li>작은 합성 데이터셋에서 나온 결과라, 실제 서비스의 탐지율이나 오탐 0을 뜻하지 않습니다.</li>
+</ul>
+<p class="note">수치는 공개 커밋 aaee611 시점의 보고서 값입니다. 우회 사례와 테스트 초안은 Claude Code와 Codex에게 제안받았고, 탐지 기준과 정책, 정규화 방식, 최종 반영 여부는 직접 판단했습니다.</p>
+</article>
+<nav class="pager" aria-label="다른 프로젝트"><a href="docker-disk-outage.html"><small>이전 프로젝트</small>5성급 호텔 서버 디스크 고갈 장애 대응</a><a class="next" href="etk-scanner.html"><small>다음 프로젝트</small>ETK-Scanner</a></nav>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>

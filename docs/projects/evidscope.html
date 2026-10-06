@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EvidScope — AI 에이전트 행동 감사 추적(Audit Trail) 파일럿 | 기민수 포트폴리오</title><meta name="description" content="AI 에이전트가 무엇을 했는지 행동, 도구 결과, 권한, 참고자료를 묶어 기록하고, 사람이 검토 근거를 남길 수 있게 하는 감사 지원 파일럿입니다.">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="../site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="../index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="../index.html#projects">프로젝트</a><a href="../index.html#career">경력과 자격</a><a href="../resume-ko.pdf">이력서 PDF</a><a href="../portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="crumb"><a href="../index.html#g-ai">← 프로젝트 목록</a></div>
+<header class="p-head"><div class="grp">AI 보안 프로젝트</div><h1>EvidScope</h1><p class="sub">AI 에이전트 행동 감사 추적(Audit Trail) 파일럿</p><p class="one">AI 에이전트가 무엇을 했는지 행동, 도구 결과, 권한, 참고자료를 묶어 기록하고, 사람이 검토 근거를 남길 수 있게 하는 감사 지원 파일럿입니다.</p>
+<p class="repo off">비공개 저장소입니다.</p></header>
+<div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>AI에게 일을 맡기면 결과 보고는 받지만, 실제로 무엇을 어떤 권한으로 했는지는 확인하기 어렵습니다. EvidScope는 행동과 도구 결과, 권한, 참고자료를 해시 체인과 서명 체크포인트로 남기고, 근거나 정책이 바뀌면 이전 판정을 재검토 상태로 돌립니다. 기획과 판단은 제가 했고 설계와 구현은 AI와 함께 했습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2026.09</td></tr><tr><th scope="row">역할</th><td>문제 정의, 우선순위와 모델, 비용 조건 결정 (AI 협업 개발)</td></tr><tr><th scope="row">환경</th><td>개인 프로젝트, 로컬 파일럿</td></tr><tr><th scope="row">기술</th><td>Node.js, SQLite, 해시 체인, 서명 체크포인트</td></tr><tr><th scope="row">저장소</th><td>비공개</td></tr></table></section></div>
+<article class="body">
+<h2>배경</h2>
+<p>여러 보안 프레임워크를 보다가, AI 에이전트가 한 일을 나중에 확인할 방법이 마땅치 않다는 점이 걸렸습니다. 그래서 로컬 파일럿으로 직접 만들어 봤습니다.</p>
+<p>AI 에이전트의 자기보고만으로는 실제로 어떤 도구를 불렀고 어떤 결과를 받았는지 알 수 없습니다. 감사하는 사람은 행동과 근거를 대조할 수 있어야 하고, 그 판단도 기록으로 남아야 합니다.</p>
+<p>준수율 같은 숫자도 문제였습니다. 근거가 없는 항목까지 준수로 세면 숫자는 좋아 보이지만 실제 상태를 가립니다.</p>
+
+<h2>한 일</h2>
+<h3>기록하는 것</h3>
+<ul>
+<li>에이전트가 한 행동과 그때 받은 도구 결과</li>
+<li>그 행동에 쓰인 권한과 참고자료</li>
+<li>사람이 내린 판단과 그 근거</li>
+</ul>
+<h3>근거 없는 항목은 준수로 세지 않는다</h3>
+<p>근거가 부족하거나 아직 평가하지 않은 항목, 예외 처리된 항목은 준수 개수에 넣지 않고 따로 셉니다. 평가 범위와 분모를 분리해서 숫자가 부풀려지지 않게 했습니다.</p>
+<h3>근거가 바뀌면 판정도 다시 연다</h3>
+<p>증거나 정책 버전이 바뀌면 이전 분석 결과를 최신으로 확정하지 않습니다. 분석 단계에서 lease 만료, 버전, 스냅샷 해시, 결과가 참조한 근거를 검사합니다. 재검토 상태는 새 근거가 들어왔는지, 평가가 바뀌었는지, 검토 기한이 지났는지에 따라 나눕니다.</p>
+<h3>내보낸 증적은 검증할 수 있어야 한다</h3>
+<p>증적을 내보낼 때 서명, 순서, 테넌트, 해시, 누락 여부를 검사합니다. 별도로 보관한 외부 체크포인트가 있으면 과거 스냅샷과도 대조합니다.</p>
+
+<h2>결과</h2>
+<p>Node.js와 SQLite로 도는 로컬 파일럿을 만들었고, 검증용 테스트 코드도 함께 작성했습니다. 행동별 증적과 사람의 검토 상태가 한 흐름으로 이어집니다.</p>
+<p class="note">무엇을 풀지, 무엇을 먼저 할지, 모델과 비용 조건은 제가 정했고 설계와 구현은 AI와 함께 했습니다. 지금은 로컬 파일럿이며 실행 차단, 도구 중개, 상용 배포, 법적 준수 인증을 하는 도구가 아닙니다. 외부 체크포인트 없이 모든 되돌림(rollback)을 탐지한다고 보지 않습니다.</p>
+</article>
+<nav class="pager" aria-label="다른 프로젝트"><a href="etk-scanner.html"><small>이전 프로젝트</small>ETK-Scanner</a><a class="next" href="security-ops-lab.html"><small>다음 프로젝트</small>보안 운영 랩: 월간 점검 자동화와 디스크 장애 재현</a></nav>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>

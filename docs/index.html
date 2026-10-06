@@ -1,351 +1,52 @@
 <!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="기민수의 보안·인프라·AI 보안 프로젝트 포트폴리오. 문제, 구현, 검증 결과를 중심으로 정리했습니다.">
-  <meta name="theme-color" content="#07131d">
-  <title>기민수 | Security Systems Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
-  <a class="skip-link" href="#main">본문으로 바로가기</a>
-
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="포트폴리오 첫 화면">
-      <span class="brand-mark" aria-hidden="true">KM</span>
-      <span>Security Systems Portfolio</span>
-    </a>
-    <nav class="nav" aria-label="주요 메뉴">
-      <a href="#featured">핵심 프로젝트</a>
-      <a href="#fieldwork">실무 사례</a>
-      <a href="#archive">프로젝트 목록</a>
-      <a class="nav-cta" href="mailto:tkops365@gmail.com">연락하기</a>
-    </nav>
-  </header>
-
-  <main id="main">
-    <section class="hero section" id="top">
-      <div class="hero-copy">
-        <p class="eyebrow">SECURITY · INFRASTRUCTURE · AI SECURITY</p>
-        <h1>보안 문제를<br><span>운영 가능한 시스템</span>으로 바꿉니다.</h1>
-        <p class="hero-lead">웹 서비스와 인프라를 운영하며 침해사고 대응, 접근통제, 복구 체계를 구축했습니다. 지금은 AI·MCP 환경에서 데이터 유출과 검증 공백을 줄이는 도구를 만들고 있습니다.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#featured">대표 프로젝트 보기</a>
-          <a class="button button-ghost" href="https://github.com/ki0915" target="_blank" rel="noreferrer">GitHub ↗</a>
-        </div>
-        <ul class="hero-facts" aria-label="핵심 이력">
-          <li><strong>2건</strong><span>고객 시스템 침해사고 대응</span></li>
-          <li><strong>약 200대</strong><span>병원 키오스크 CMS 운영</span></li>
-          <li><strong>165 passed</strong><span>Mcp-Guard 공개 테스트</span></li>
-        </ul>
-      </div>
-
-      <div class="work-map" aria-label="업무 영역 연결도">
-        <div class="map-topline">
-          <span>WORK MAP</span>
-          <span class="live-dot">Evidence first</span>
-        </div>
-        <div class="map-stage">
-          <div class="map-core">
-            <span>문제 정의</span>
-            <strong>BUILD</strong>
-            <small>구현 · 검증 · 문서화</small>
-          </div>
-          <div class="map-node node-a"><b>01</b><span>Incident<br>Response</span></div>
-          <div class="map-node node-b"><b>02</b><span>AI<br>Security</span></div>
-          <div class="map-node node-c"><b>03</b><span>Cloud &<br>Infra</span></div>
-          <div class="map-node node-d"><b>04</b><span>Software<br>Systems</span></div>
-          <svg class="map-lines" viewBox="0 0 620 480" aria-hidden="true">
-            <path d="M310 240 C225 175 175 130 105 94" />
-            <path d="M310 240 C395 175 455 128 525 94" />
-            <path d="M310 240 C220 300 165 350 100 395" />
-            <path d="M310 240 C400 300 470 350 530 395" />
-          </svg>
-        </div>
-        <div class="map-caption"><span>정책</span><span>코드</span><span>인프라</span><span>증거</span></div>
-      </div>
-    </section>
-
-    <section class="proof-strip" aria-label="검증된 작업 범위">
-      <div><span>01</span><strong>현장 대응</strong><small>사고 조사부터 재구축까지</small></div>
-      <div><span>02</span><strong>제품 구현</strong><small>웹·시스템·보안 도구</small></div>
-      <div><span>03</span><strong>운영 설계</strong><small>접근통제·백업·복구</small></div>
-      <div><span>04</span><strong>검증 기록</strong><small>테스트·한계·문서화</small></div>
-    </section>
-
-    <section class="section" id="featured">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">FEATURED BUILDS</p>
-          <h2>핵심 프로젝트</h2>
-        </div>
-        <p>기술 이름보다 <b>어떤 위험을 줄이려 했는지</b>, 무엇을 구현했고 어디까지 검증했는지를 먼저 보여줍니다.</p>
-      </div>
-
-      <article class="feature-card accent-mint">
-        <div class="feature-copy">
-          <div class="project-meta"><span>PERSONAL PROJECT</span><span>AI / MCP SECURITY</span></div>
-          <h3>Mcp-Guard</h3>
-          <p class="project-intro">LLM과 MCP 도구 사이에서 민감정보가 외부로 전달되기 전에 탐지·마스킹·차단하는 로컬 DLP 프록시입니다.</p>
-          <dl class="project-flow">
-            <div><dt>Problem</dt><dd>프롬프트와 도구 호출에 포함된 자격증명·개인정보가 그대로 전달될 수 있는 문제</dd></div>
-            <div><dt>Build</dt><dd>HTTP·stdio 프록시, 정규화와 제한적 Base64 복호화, redact/block/alert 정책, fail-closed 처리와 마스킹 감사 로그</dd></div>
-            <div><dt>Evidence</dt><dd>공개 저장소 기준 테스트 165건 통과·1건 건너뜀. 합성 민감정보 60건 중 56건 탐지, 정상 30건 오탐 0건</dd></div>
-          </dl>
-          <div class="scope-note">로컬·합성 데이터 기반 검증이며, 상용 DLP 도입 실적이나 운영망 성능을 의미하지 않습니다.</div>
-          <a class="text-link" href="https://github.com/ki0915/Mcp-Guard" target="_blank" rel="noreferrer">코드와 검증 자료 보기 ↗</a>
-        </div>
-        <div class="product-ui guard-ui" aria-label="Mcp-Guard 정책 검사 화면 모형">
-          <div class="ui-bar"><span>MCP TRAFFIC INSPECTOR · 화면 모형</span><i></i><i></i><i></i></div>
-          <div class="ui-body">
-            <div class="traffic-rail">
-              <span class="active">sample_request</span><span>tool_response</span><span>policy_event</span><span>audit_record</span>
-            </div>
-            <div class="traffic-main">
-              <div class="request-head"><span>tools/call</span><b>BLOCKED</b></div>
-              <pre><code>{
-  "tool": "send_message",
-  "args": {
-    "token": "<mark>[REDACTED]</mark>",
-    "note": "quarterly report"
-  }
-}</code></pre>
-              <div class="policy-grid">
-                <div><span>RULE</span><strong>credential.token</strong></div>
-                <div><span>ACTION</span><strong>block + audit</strong></div>
-                <div><span>CHANNEL</span><strong>stdio</strong></div>
-              </div>
-              <div class="audit-line"><span></span>masked audit record written</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="feature-card feature-reverse accent-blue">
-        <div class="feature-copy">
-          <div class="project-meta"><span>PERSONAL PROJECT</span><span>APPSEC / DEVSECOPS</span></div>
-          <h3>ETK-Scanner</h3>
-          <p class="project-intro">정적 규칙으로 후보를 좁히고 LLM으로 문맥을 재검토해, CI에서 다룰 수 있는 결과로 내보내는 보안 분석 파이프라인입니다.</p>
-          <dl class="project-flow">
-            <div><dt>Problem</dt><dd>LLM 단독 분석의 비용·재현성 문제와 정적 분석의 문맥 부족을 함께 줄여야 했습니다.</dd></div>
-            <div><dt>Build</dt><dd>정적 후보 추출, 심각도별 LLM 검증, 호출 예산, SARIF 출력, 기준 초과 시 CI 실패 게이트를 연결했습니다.</dd></div>
-            <div><dt>Evidence</dt><dd>SecurityEval 취약 코드 121개 중 111개 탐지(재현율 91.7%). 안전 샘플이 없어 정밀도·오탐률은 아직 측정하지 않았습니다.</dd></div>
-          </dl>
-          <div class="scope-note">오픈소스 분석 과정에서 확인한 권한 검사 문제를 유지관리자에게 제보했고, 영향과 수정 의도가 확인됐습니다.</div>
-          <a class="text-link" href="https://github.com/ki0915/etk-scanner" target="_blank" rel="noreferrer">파이프라인과 SARIF 구현 보기 ↗</a>
-        </div>
-        <div class="product-ui scanner-ui" aria-label="ETK-Scanner 분석 파이프라인 화면 모형">
-          <div class="ui-bar"><span>SECURITY PIPELINE · 화면 모형</span><i></i><i></i><i></i></div>
-          <div class="pipeline">
-            <div class="pipe-step done"><b>01</b><span>Static scan</span><small>candidate queue</small></div>
-            <div class="pipe-link"></div>
-            <div class="pipe-step done"><b>02</b><span>LLM review</span><small>budget bounded</small></div>
-            <div class="pipe-link"></div>
-            <div class="pipe-step done"><b>03</b><span>SARIF gate</span><small>CI ready</small></div>
-          </div>
-          <div class="finding-panel">
-            <div class="finding-title"><span>HIGH</span><strong>Authorization check may be bypassed</strong></div>
-            <div class="code-lines"><i style="--w:84%"></i><i style="--w:71%"></i><i class="risk" style="--w:93%"></i><i style="--w:58%"></i></div>
-            <div class="finding-foot"><span>reviewed finding</span><span>CWE mapped</span><span>SARIF emitted</span></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="feature-card accent-amber">
-        <div class="feature-copy">
-          <div class="project-meta"><span>LOCAL PILOT</span><span>AI GOVERNANCE</span></div>
-          <h3>EvidScope</h3>
-          <p class="project-intro">AI 에이전트의 행동·권한·근거·평가 결과를 한 흐름에서 검토하기 위한 감사 증거 워크벤치입니다.</p>
-          <dl class="project-flow">
-            <div><dt>Problem</dt><dd>AI 자산을 등록했다는 사실과 실제 행동 기록을 수집했다는 사실이 뒤섞이면 검토 범위가 과장됩니다.</dd></div>
-            <div><dt>Build</dt><dd>Node.js·SQLite로 행동과 도구 결과, 권한, 참조 근거, 평가 기록을 연결하고 해시 체인·체크포인트·재검토 상태를 구성했습니다.</dd></div>
-            <div><dt>Evidence</dt><dd>등록 자산, 실제 수신 기록, 증거 커버리지를 분리해 보이도록 로컬 파일럿의 검토 흐름을 구현했습니다.</dd></div>
-          </dl>
-          <div class="scope-note">문제 정의·우선순위·최종 판단은 직접 수행하고, 설계·구현·감사 보조에 AI를 활용했습니다. 운영 SIEM이나 법적 인증 성과는 아닙니다.</div>
-          <span class="text-link muted-link">로컬 개발 중 · 공개 저장소 미확인</span>
-        </div>
-        <div class="product-ui evidence-ui" aria-label="EvidScope 증거 검토 화면 모형">
-          <div class="ui-bar"><span>EVIDENCE WORKBENCH · 화면 모형</span><i></i><i></i><i></i></div>
-          <div class="coverage-head">
-            <div><span>REGISTERED</span><strong>자산</strong></div>
-            <div><span>RECEIVED</span><strong>기록</strong></div>
-            <div><span>REVIEWED</span><strong>검토</strong></div>
-          </div>
-          <div class="event-chain">
-            <div><b>01</b><span>agent.action</span><small>hash linked</small></div>
-            <div><b>02</b><span>tool.result</span><small>hash linked</small></div>
-            <div class="review"><b>03</b><span>human.review</span><small>needs context</small></div>
-          </div>
-          <div class="review-row"><span>Evidence coverage</span><b>scope based</b></div>
-          <div class="coverage-track"><span></span></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="section field-section" id="fieldwork">
-      <div class="section-heading light-heading">
-        <div>
-          <p class="eyebrow">FIELD WORK</p>
-          <h2>실무에서 해결한 문제</h2>
-        </div>
-        <p>미디어솔루션 · 연구개발팀 · 2023.04–2025.03. 기존 실무 프로젝트는 유지하되 고객사 명칭은 공개 화면에서 익명화했습니다.</p>
-      </div>
-
-      <div class="case-grid">
-        <article class="case-card">
-          <span class="case-number">01</span>
-          <p class="case-kicker">INCIDENT RESPONSE · IIS</p>
-          <h3>고객 CMS 침해대응과 실행 경로 분석</h3>
-          <p>KISA 통보로 확인된 침해사고에서 현장 시스템 접근과 관리자 계정을 복구하고, 로그와 IIS 응용프로그램 풀에서 실행되는 악성 행위를 추적했습니다. 구형 미들웨어·웹 필터의 취약 구성을 점검하고 VPN 도입, 프레임워크 개선과 AWS 이관 권고안을 정리했습니다.</p>
-          <div class="case-result"><b>결과</b><span>서비스 접근을 복구한 뒤 악성 실행 경로와 재발 방지를 위한 기술 조치·이관 선택지를 고객에게 전달했습니다.</span></div>
-        </article>
-
-        <article class="case-card case-wide">
-          <span class="case-number">02</span>
-          <div>
-            <p class="case-kicker">INCIDENT RESPONSE · AWS</p>
-            <h3>크립토재커 침해대응과 클라우드 재구축</h3>
-            <p>서비스 중단, 높은 CPU·메모리 점유, 공격자가 설치한 가상화 환경을 조사하고 구형 ASP.NET 구성의 위험을 공개 CVE와 대조했습니다. MSSQL 데이터를 격리 환경에서 확인한 뒤 애플리케이션을 EC2, 데이터베이스를 RDS로 재구축하고 보안그룹을 운영 IP 허용목록 중심으로 조정해 RDP 접근을 차단했습니다.</p>
-            <div class="case-result"><b>결과</b><span>두 사고 중 기록된 한 건은 인지부터 복구까지 4일. AWS 이관 후 재직 중 관측 범위에서 동일 원인 공격 재발 없음.</span></div>
-          </div>
-          <div class="mini-architecture" aria-label="침해사고 대응 구조도">
-            <div class="arch-risk">Public<br>traffic</div><span>→</span><div>Allowlist<br>Security Group</div><span>→</span><div>EC2<br>Application</div><span>→</span><div>RDS<br>Database</div>
-          </div>
-        </article>
-
-        <article class="case-card">
-          <span class="case-number">03</span>
-          <p class="case-kicker">FULL-STACK · OPERATIONS</p>
-          <h3>병원 키오스크 통합 CMS</h3>
-          <p>약 200대 단말의 현장 방문을 줄이기 위해 TypeScript·Angular·Node.js·MariaDB·Redis로 관리 시스템을 단독 설계·개발·운영했습니다. WebSocket 원격 화면과 명령, 예약·그룹 배포, 중단점 롤백, 전원 스케줄링을 구현했습니다.</p>
-          <div class="case-result"><b>결과</b><span>원격 조치와 배포 흐름을 운영에 적용하고, 인증·RBAC·계정 정책을 포함한 납품 CMS가 병원 보안점검을 통과했습니다.</span></div>
-        </article>
-
-        <article class="case-card">
-          <span class="case-number">04</span>
-          <p class="case-kicker">BACKUP · RECOVERY</p>
-          <h3>백업·이중화 체계</h3>
-          <p>Hyper-V 스냅샷 의존을 줄이기 위해 별도 볼륨의 변경 제한 백업, AWS 서버 이미지·MSSQL 복제, API 실패 시 전환 흐름, 게이트웨이 IP 접근 제한과 복구 절차를 구성했습니다.</p>
-          <div class="case-result"><b>결과</b><span>퇴사 후 2025년 4월 발생한 랜섬웨어 복구에 사전 구축한 체계가 사용됐고, 전달받은 기록상 데이터 손실 없이 1일 내 복구됐습니다.</span></div>
-        </article>
-
-        <article class="case-card">
-          <span class="case-number">05</span>
-          <p class="case-kicker">WINDOWS SERVER · HYPER-V</p>
-          <h3>노후 서버 통합과 접근 경로 개선</h3>
-          <p>노후 서버 7대의 역할과 외부 노출을 확인하고 Windows Server 2022·Hyper-V 기반으로 통합·이관했습니다. 웹·DB 서버의 직접 원격 접근을 없애고 내부망 경로로 제한했으며 XP 기반 출퇴근 서버도 교체했습니다.</p>
-          <div class="case-result"><b>결과</b><span>분산된 서버 역할과 관리 경로를 정리해 유지보수 기준과 접근통제를 함께 개선했습니다.</span></div>
-        </article>
-
-        <article class="case-card">
-          <span class="case-number">06</span>
-          <p class="case-kicker">SEGMENTED NETWORK · AUTH</p>
-          <h3>분리망 본인인증 연동</h3>
-          <p>외부 통신이 제한된 환경에서 NICE CPClient와 Electron, IIS/.NET 로컬 인증 서버를 연결했습니다. 인증 통신 경로를 제한하고 처리 이력과 복구 절차를 중앙에서 확인할 수 있도록 구성했습니다.</p>
-          <div class="case-result"><b>결과</b><span>제한된 네트워크 조건에서도 본인인증을 운영할 수 있는 연동 구조와 장애 대응 문서를 남겼습니다.</span></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section archive-section" id="archive">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">PROJECT ARCHIVE</p>
-          <h2>기술을 익히고 검증한 기록</h2>
-        </div>
-        <p>프로젝트의 성격과 검증 범위를 숨기지 않습니다. 아래 필터로 관심 영역만 골라볼 수 있습니다.</p>
-      </div>
-
-      <div class="filters" role="group" aria-label="프로젝트 필터">
-        <button class="filter-button active" type="button" data-filter="all">전체</button>
-        <button class="filter-button" type="button" data-filter="security">Security</button>
-        <button class="filter-button" type="button" data-filter="software">Software</button>
-        <button class="filter-button" type="button" data-filter="learning">Learning</button>
-      </div>
-
-      <div class="archive-grid">
-        <article class="archive-card" data-category="security software">
-          <div class="archive-top"><span>FULL-STACK</span><span>PUBLIC</span></div>
-          <h3>WIKI</h3>
-          <p>TypeScript·Express·Angular 기반으로 JWT 인증, 역할 분리, Socket.IO 채팅방과 메시지 저장을 구현한 웹 학습 프로젝트입니다.</p>
-          <ul><li>JWT · bcrypt · role control</li><li>Socket.IO room persistence</li><li>공개 코드의 키 관리 한계 확인</li></ul>
-          <div class="archive-links"><a href="https://github.com/ki0915/wiki-backend" target="_blank" rel="noreferrer">Backend ↗</a><a href="https://github.com/ki0915/wiki-frontend" target="_blank" rel="noreferrer">Frontend ↗</a></div>
-        </article>
-
-        <article class="archive-card" data-category="security learning">
-          <div class="archive-top"><span>SECURITY GUIDE</span><span>PUBLIC</span></div>
-          <h3>Docker Security Guide</h3>
-          <p>OWASP·CIS·NIST 자료를 바탕으로 컨테이너 위험과 방어 방법을 구현 비용과 함께 정리한 기술 가이드입니다.</p>
-          <ul><li>이미지·권한·시크릿 관리</li><li>런타임 및 네트워크 방어</li><li>문서 연구이며 배포 실적과 구분</li></ul>
-          <div class="archive-links"><a href="https://github.com/ki0915/Docker-Security-Guide" target="_blank" rel="noreferrer">Guide ↗</a></div>
-        </article>
-
-        <article class="archive-card" data-category="software learning">
-          <div class="archive-top"><span>DESKTOP / API</span><span>2021–2022</span></div>
-          <figure class="archive-visual"><img src="./assets/kiosk.png" alt="Order Kiosk 프로젝트 상품 주문 화면"></figure>
-          <h3>Order Kiosk</h3>
-          <p>C# WPF·Node.js·Express·MSSQL로 상품, 장바구니, 주문 금액 검증과 관리자 CRUD를 구현한 개인 학습 프로젝트입니다.</p>
-          <ul><li>Desktop UI + REST API</li><li>Order total validation</li><li>병원 CMS와 별개의 프로젝트</li></ul>
-          <div class="archive-links"><a href="https://github.com/ki0915/Kiosk" target="_blank" rel="noreferrer">Repository ↗</a></div>
-        </article>
-
-        <article class="archive-card" data-category="software learning">
-          <div class="archive-top"><span>WEB APPLICATION</span><span>2022</span></div>
-          <figure class="archive-visual"><img src="./assets/carrot.png" alt="Carrot Clone 프로젝트 상품 목록 화면"></figure>
-          <h3>Carrot Clone</h3>
-          <p>React·Axios·Material UI와 Node.js·Express·MySQL·Sequelize로 상품 조회·등록 등 기본 기능을 만든 웹 학습 프로젝트입니다.</p>
-          <ul><li>React client + Express API</li><li>MySQL / Sequelize</li><li>채팅 화면은 더미 데이터 기반</li></ul>
-          <div class="archive-links"><a href="https://github.com/ki0915/carrot-frontend" target="_blank" rel="noreferrer">Frontend ↗</a><a href="https://github.com/ki0915/carrot-backend" target="_blank" rel="noreferrer">Backend ↗</a></div>
-        </article>
-
-        <article class="archive-card" data-category="security learning">
-          <div class="archive-top"><span>AUTHORIZED LAB</span><span>TRAINING</span></div>
-          <h3>TryHackMe Labs</h3>
-          <p>허가된 실습 환경에서 Nmap 열거, SMB·IIS 점검, 권한 상승 경로 확인과 결과 보고를 반복하며 공격 흐름을 학습했습니다.</p>
-          <ul><li>Network / service enumeration</li><li>Windows attack paths</li><li>고객 모의해킹 실적과 구분</li></ul>
-          <div class="archive-links"><span>Training record</span></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section toolkit-section" id="toolkit">
-      <div class="toolkit-copy">
-        <p class="eyebrow">HOW I WORK</p>
-        <h2>코드만 고치지 않고<br>운영 조건까지 연결합니다.</h2>
-        <p>문제의 발생 경로를 확인하고, 코드·인프라·정책 중 책임이 있는 지점을 찾습니다. 이후 다시 확인할 수 있는 테스트와 운영 문서를 남깁니다.</p>
-      </div>
-      <ol class="method-list">
-        <li><span>01</span><div><strong>Observe</strong><p>로그·프로세스·네트워크 경로와 사용자 불편을 확인합니다.</p></div></li>
-        <li><span>02</span><div><strong>Bound</strong><p>사실, 추정, 영향 범위와 우선순위를 분리합니다.</p></div></li>
-        <li><span>03</span><div><strong>Build</strong><p>코드·접근통제·복구 절차를 실제 운영 흐름에 맞춥니다.</p></div></li>
-        <li><span>04</span><div><strong>Verify</strong><p>테스트 결과와 한계를 기록하고 다음 검토가 가능하게 만듭니다.</p></div></li>
-      </ol>
-      <div class="stack-board">
-        <span>TypeScript</span><span>Node.js</span><span>Angular</span><span>Express</span><span>Python</span><span>C# / .NET</span><span>Windows Server</span><span>Linux</span><span>AWS EC2 / RDS</span><span>Docker</span><span>Hyper-V</span><span>MSSQL</span><span>MariaDB</span><span>Redis</span><span>WebSocket</span><span>CI / SARIF</span>
-      </div>
-    </section>
-
-    <section class="contact-section">
-      <p class="eyebrow">CONTACT</p>
-      <h2>운영되는 보안을 함께 만들고 싶습니다.</h2>
-      <p>보안 엔지니어링, 클라우드·인프라 운영, AI 보안 프로젝트에 관심이 있습니다.</p>
-      <div class="contact-links">
-        <a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a>
-        <a href="https://github.com/ki0915" target="_blank" rel="noreferrer">GitHub ↗</a>
-        <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b" target="_blank" rel="noreferrer">LinkedIn ↗</a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <span>© <span id="year"></span> Kim Minsu</span>
-    <span>Built as an evidence-first portfolio.</span>
-  </footer>
-
-  <script src="./app.js"></script>
-</body>
-</html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기민수 | 정보보안 포트폴리오</title><meta name="description" content="고객사 서버의 침해사고 대응과 접근통제, 백업 설계를 맡았고 생성형 AI 보안 도구(DLP, SAST)를 만든 기민수의 포트폴리오">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="index.html#projects">프로젝트</a><a href="index.html#career">경력과 자격</a><a href="resume-ko.pdf">이력서 PDF</a><a href="portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<section class="hero" aria-labelledby="name">
+<p class="what">정보보안 담당자 지원 포트폴리오</p>
+<h1 id="name">기민수<span>Ki Minsoo</span></h1>
+<div class="intro"><p>2023년 4월부터 2025년 3월까지 미디어솔루션 연구개발팀에서 대형병원, 대형 컨벤션센터, 5성급 호텔 2곳의 서버와 웹 서비스를 맡았습니다. 고객사 웹 서버가 두 번 침해됐을 때 현장에서 대응해 AWS로 다시 세웠고, 병원 보안점검에는 납품사 담당자로 수검에 대응해 납품한 CMS가 모두 통과했습니다.</p><p>퇴사 후에는 생성형 AI를 쓰면서 생기는 문제를 직접 도구로 만들어 풀었습니다. LLM으로 개인정보가 새는 것을 막는 프록시와, 비용 상한을 둔 LLM 기반 소스코드 취약점 진단 도구를 공개했습니다.</p></div>
+<p class="links"><a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a><span class="sep">|</span><a href="https://github.com/ki0915">github.com/ki0915</a><span class="sep">|</span><a href="resume-ko.pdf">이력서 PDF</a><span class="sep">|</span><a href="portfolio.pdf">포트폴리오 PDF</a></p>
+</section>
+<section class="sec" id="projects" aria-labelledby="h-projects"><h2 id="h-projects">프로젝트</h2>
+<table class="toc"><thead><tr><th scope="col">프로젝트</th><th scope="col">내용</th><th scope="col">기간</th><th scope="col">저장소</th></tr></thead><tbody>
+<tr class="grp" id="g-work"><td colspan="4">실무 트러블슈팅<span>미디어솔루션 연구개발팀에서 고객사 서버와 서비스를 맡으며 직접 처리한 일입니다. 고객사는 업종으로만 적었습니다.</span></td></tr>
+<tr><td class="name"><a href="projects/incident-response.html">고객사 웹 서버 침해사고 2건 대응과 AWS 재구축</a></td><td>KISA 침해 통보와 서비스 중단 신고로 시작된 두 사고에 현장 대응했습니다. 두 번째 사고 뒤에는 서버를 새로 세우는 쪽으로 의사결정을 도왔고, 무결성을 확인한 데이터만 AWS EC2와 RDS로 옮겼습니다.</td><td class="d">2023.04 – 2025.03 재직 중</td><td class="s">실무, 소스 비공개</td></tr>
+<tr><td class="name"><a href="projects/hospital-cms.html">대형병원 키오스크 CMS 보안점검 대응</a></td><td>병원 키오스크 약 200대를 원격으로 관리하는 CMS를 혼자 설계하고 운영했습니다. 병원 보안 요구에 맞춰 인증과 권한 구조를 고치면서, 세션 검증보다 권한 부여가 먼저 일어나는 경쟁 조건을 찾아 수정했습니다.</td><td class="d">2023.04 – 2025.03</td><td class="s">실무, 소스 비공개</td></tr>
+<tr><td class="name"><a href="projects/backup-servers.html">서버 7대 통합과 백업 재설계 (BCP/DR)</a></td><td>노후 서버 7대를 Windows Server 2022와 Hyper-V로 합치고, 스냅샷 하나에 기대던 복구를 여러 겹으로 바꿨습니다. 퇴사 직후 랜섬웨어 사고에서 회사는 이 백업으로 데이터 손실 없이 하루 만에 복구했습니다.</td><td class="d">2023.04 – 2025.03</td><td class="s">실무, 소스 비공개</td></tr>
+<tr><td class="name"><a href="projects/docker-disk-outage.html">5성급 호텔 서버 디스크 고갈 장애 대응</a></td><td>배포할 때마다 Docker 이미지와 중지된 컨테이너가 쌓여 디스크가 가득 찼고, 서비스가 멈췄습니다. 원인을 확인해 정리한 뒤 cron으로 주기 정리를 자동화했습니다.</td><td class="d">2023.04 – 2025.03 재직 중</td><td class="s">실무, 소스 비공개</td></tr>
+<tr class="grp" id="g-ai"><td colspan="4">AI 보안 프로젝트<span>퇴사 뒤 생성형 AI로 개인정보가 새는 문제, 취약점을 적은 비용으로 찾는 문제, AI가 한 일을 감사하는 문제를 도구로 만들어 검증했습니다.</span></td></tr>
+<tr><td class="name"><a href="projects/mcp-guard.html">Mcp-Guard</a><small>LLM과 MCP 통신의 개인정보 유출 방지(DLP) 프록시</small></td><td>LLM API와 MCP 도구로 나가는 요청에서 주민등록번호, 카드번호, API 키 같은 개인정보(PII)와 시크릿을 찾아 가리거나 막는 Python 프록시입니다.</td><td class="d">2026.07</td><td class="s"><a href="https://github.com/ki0915/Mcp-Guard">공개 저장소</a></td></tr>
+<tr><td class="name"><a href="projects/etk-scanner.html">ETK-Scanner</a><small>비용 상한이 있는 LLM 기반 소스코드 취약점 진단(SAST)</small></td><td>정적분석으로 후보를 좁히고 LLM 검증은 필요한 곳에만 쓰는 소스코드 취약점 스캐너입니다. 결과를 SARIF 2.1.0으로 내보내 GitHub Actions에 붙였습니다.</td><td class="d">2026.07</td><td class="s"><a href="https://github.com/ki0915/etk-scanner">공개 저장소</a></td></tr>
+<tr><td class="name"><a href="projects/evidscope.html">EvidScope</a><small>AI 에이전트 행동 감사 추적(Audit Trail) 파일럿</small></td><td>AI 에이전트가 무엇을 했는지 행동, 도구 결과, 권한, 참고자료를 묶어 기록하고, 사람이 검토 근거를 남길 수 있게 하는 감사 지원 파일럿입니다.</td><td class="d">2026.09</td><td class="s">비공개 저장소</td></tr>
+<tr class="grp" id="g-lab"><td colspan="4">보안 운영 실습<span>실무에서 겪은 문제를 다시 재현하거나 기준 문서로 정리한 개인 실습입니다.</span></td></tr>
+<tr><td class="name"><a href="projects/security-ops-lab.html">보안 운영 랩: 월간 점검 자동화와 디스크 장애 재현</a></td><td>KISA Unix 점검 항목을 지난달 결과와 비교해 조치 이행을 추적하는 월간 점검 스크립트와, 호텔 서버 디스크 고갈 장애를 1GiB 디스크로 재현해 만든 Docker 정리 가드입니다.</td><td class="d">2026.10</td><td class="s">개인 랩, 비공개</td></tr>
+<tr><td class="name"><a href="projects/docker-security-guide.html">Docker 컨테이너 보안 가이드</a></td><td>OWASP Docker Top 10, CIS Docker Benchmark, NIST SP 800-190을 위험도와 구현 비용 기준으로 다시 묶어, 먼저 할 일과 나중에 할 일을 나눈 가이드입니다.</td><td class="d">2026</td><td class="s"><a href="https://github.com/ki0915/Docker-Security-Guide">공개 저장소</a></td></tr>
+</tbody></table></section>
+<section class="sec" id="career" aria-labelledby="h-career"><h2 id="h-career">경력과 자격</h2>
+<div class="job"><b>미디어솔루션</b><span class="date">2023.04 – 2025.03</span></div>
+<p class="role">연구개발팀 사원 (병역특례)</p>
+<p class="ctx">키오스크와 안내용 CMS를 개발해 납품하고 운영까지 맡는 회사입니다. 대형병원, 대형 컨벤션센터, 5성급 호텔 2곳의 서버와 웹 서비스를 담당했고, 병원 키오스크 약 200대를 관리하는 CMS를 혼자 개발했습니다.</p>
+<table class="facts">
+<tr><th>자격</th><td>정보보안기사</td><td class="o">한국방송통신전파진흥원</td><td class="d">2025.05</td></tr>
+<tr><th></th><td>CISA 시험 합격 (Associate)</td><td class="o">ISACA</td><td class="d">2024.07</td></tr>
+<tr><th></th><td>CLLMSP (LLM 보안)</td><td class="o">Red Team Leaders</td><td class="d">2026.07</td></tr>
+<tr><th></th><td>정보처리산업기사</td><td class="o">한국산업인력공단</td><td class="d">2023.09</td></tr>
+<tr><th></th><td>Azure Fundamentals (AZ-900)</td><td class="o">Microsoft</td><td class="d">2022.08</td></tr>
+<tr><th></th><td>네트워크관리사 2급</td><td class="o">ICQA</td><td class="d">2021.11</td></tr>
+<tr class="gap"><th>학력</th><td>정보보호학 학사</td><td class="o">학점은행제</td><td class="d">2026.08</td></tr>
+<tr><th></th><td>컴퓨터보안 전문학사</td><td class="o">명지전문대학</td><td class="d">2026.02</td></tr>
+<tr class="gap"><th>교육</th><td>케이쉴드 주니어 (80시간)</td><td class="o">KISA</td><td class="d">2024.11</td></tr>
+<tr class="gap"><th>어학</th><td>TOEIC Speaking IH (140)</td><td class="o">ETS</td><td class="d">2025.07</td></tr>
+</table>
+</section>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:tkops365@gmail.com">tkops365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>
