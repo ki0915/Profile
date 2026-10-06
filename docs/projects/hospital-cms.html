@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>대형병원 키오스크 CMS 보안점검 대응 | 기민수 포트폴리오</title><meta name="description" content="병원 키오스크 약 200대를 원격으로 관리하는 CMS를 혼자 설계하고 운영했습니다. 병원 보안 요구에 맞춰 인증과 권한 구조를 고치면서, 세션 검증보다 권한 부여가 먼저 일어나는 경쟁 조건을 찾아 수정했습니다.">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="../site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="../index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="../index.html#projects">프로젝트</a><a href="../index.html#career">경력과 자격</a><a href="../resume-ko.pdf">이력서 PDF</a><a href="../portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="crumb"><a href="../index.html#g-work">← 프로젝트 목록</a></div>
+<header class="p-head"><div class="grp">실무 트러블슈팅</div><h1>대형병원 키오스크 CMS 보안점검 대응</h1><p class="one">병원 키오스크 약 200대를 원격으로 관리하는 CMS를 혼자 설계하고 운영했습니다. 병원 보안 요구에 맞춰 인증과 권한 구조를 고치면서, 세션 검증보다 권한 부여가 먼저 일어나는 경쟁 조건을 찾아 수정했습니다.</p>
+<p class="repo off">고객사 납품물이라 소스는 공개하지 않습니다.</p></header>
+<div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>대형병원 내부망의 키오스크 약 200대를 관리하는 CMS를 혼자 설계하고 개발해 운영했습니다. 인증과 권한 구조를 병원 기준에 맞추면서 Redis 세션 검증 전에 임시 권한이 붙는 Race Condition을 찾아 고쳤고, RBAC와 JWT, bcrypt, 계정 잠금 정책을 적용했습니다. 납품한 CMS는 모두 병원 보안점검을 통과했습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2023.04 – 2025.03</td></tr><tr><th scope="row">역할</th><td>단독 설계, 개발, 운영과 보안점검 대응</td></tr><tr><th scope="row">환경</th><td>망분리된 대형병원 내부망, 키오스크 약 200대</td></tr><tr><th scope="row">기술</th><td>TypeScript, Node.js, Express, Angular, MariaDB, Redis, WebSocket, Sequelize, PM2, SonarQube, Docker, Electron, IIS, .NET</td></tr><tr><th scope="row">저장소</th><td>해당 없음 (실무, 소스 비공개)</td></tr></table></section></div>
+<article class="body">
+<h2>배경</h2>
+<p>병원 키오스크는 장애가 날 때마다 담당자가 현장까지 걸어가야 했습니다. 기록상 편도 5분에서 20분 거리였고, 원격으로 화면을 보거나 명령을 보낼 수단이 없었습니다.</p>
+<p>병원은 외부망과 분리된 내부망이라 외부 인증기관으로 나가는 통신도 막혀 있었습니다. 납품사가 넘기는 CMS는 병원 보안점검을 통과해야 했고, 권한 분리와 계정 정책을 병원 기준에 맞춰야 했습니다.</p>
+
+<h2>한 일</h2>
+<h3>원격 관리 CMS</h3>
+<ul>
+<li>raw WebSocket으로 키오스크 화면을 실시간으로 보는 미러링과 원격 명령 전달을 구현했습니다.</li>
+<li>예약 배포와 그룹별 배포를 만들고, 배포가 중간에 끊기면 중단 지점부터 되돌리는 롤백을 넣었습니다.</li>
+<li>키오스크 전원을 켜고 끄는 시간을 예약할 수 있게 했습니다.</li>
+<li>Sequelize로 DB 자동 마이그레이션을 구성했습니다.</li>
+<li>PM2로 메모리 사용과 재시작 동작을 진단하고 SonarQube로 정적분석을 돌렸습니다. Docker로 Windows에서 Linux로 옮긴 배포 과정과 기능명세서, 운영 기술 문서를 남겼습니다.</li>
+</ul>
+<h3>Race Condition 수정</h3>
+<p>병원 보안 요구에 맞춰 인증과 권한 구조를 고치면서, Redis에서 세션 검증이 끝나기 전에 임시 권한이 먼저 붙는 구간을 찾았습니다. 요청 타이밍에 따라 검증되지 않은 세션이 권한을 쥘 수 있는 구조였습니다. 권한 부여를 세션 검증 뒤로 옮겨 순서를 바로잡았습니다.</p>
+<div class="tbl"><table><tr class="hd"><th>구분</th><th>처리 순서</th></tr>
+<tr><td data-label="구분">수정 전</td><td data-label="처리 순서">요청 → 임시 권한 부여 → Redis 세션 검증</td></tr>
+<tr><td data-label="구분">수정 후</td><td data-label="처리 순서">요청 → Redis 세션 검증 → 권한 부여</td></tr></table></div>
+<h3>인증과 계정 정책</h3>
+<div class="tbl"><table><tr class="hd"><th>점검 항목</th><th>적용한 내용</th></tr>
+<tr><td data-label="점검 항목">권한 분리</td><td data-label="적용한 내용">관리자와 운영자 역할을 나눈 RBAC</td></tr>
+<tr><td data-label="점검 항목">인증 토큰</td><td data-label="적용한 내용">서버 개인키로 서명한 JWT</td></tr>
+<tr><td data-label="점검 항목">비밀번호 저장</td><td data-label="적용한 내용">bcrypt 해시</td></tr>
+<tr><td data-label="점검 항목">비밀번호 정책</td><td data-label="적용한 내용">90일마다 변경, 이전 비밀번호 재사용 금지</td></tr>
+<tr><td data-label="점검 항목">무차별 대입</td><td data-label="적용한 내용">로그인 실패 횟수 제한과 계정 잠금</td></tr>
+</table></div>
+<h3>망분리 환경의 NICE 본인인증</h3>
+<p>내부망에서 NICE 본인인증을 쓰려면 바깥으로 나가는 길이 필요했습니다. NICE CPClient를 Electron 앱과 IIS, .NET 로컬 인증 서버에 연결하고 콜백 흐름을 설계했습니다. 인증에 꼭 필요한 통신 경로만 열었고, 인증 이력은 한곳에 모아 관리했습니다.</p>
+<p>Windows 업데이트 뒤 IIS와 .NET 인증 환경에서 장애가 났을 때는 원인을 점검하고 복구 절차를 문서로 남겼습니다.</p>
+
+<h2>결과</h2>
+<ul>
+<li>납품한 CMS 전체가 병원 보안점검을 통과했습니다. 통과 범위는 병원 전체 감사가 아니라 이 CMS에 대한 점검입니다.</li>
+<li>원격으로 풀 수 있는 장애는 현장에 가지 않고 처리하게 됐습니다. 전체 업무 시간이 얼마나 줄었는지는 따로 재지 않았습니다.</li>
+</ul>
+<p class="note">약 200대는 병원에 설치된 키오스크 수이며 서버 수가 아닙니다. JWT는 서명된 토큰일 뿐 내용을 암호화하지는 않습니다.</p>
+</article>
+<nav class="pager" aria-label="다른 프로젝트"><a href="incident-response.html"><small>이전 프로젝트</small>고객사 웹 서버 침해사고 2건 대응과 AWS 재구축</a><a class="next" href="backup-servers.html"><small>다음 프로젝트</small>서버 7대 통합과 백업 재설계 (BCP/DR)</a></nav>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:kiminsoo365@gmail.com">kiminsoo365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>

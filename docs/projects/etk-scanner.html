@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ETK-Scanner — 비용 상한이 있는 LLM 기반 소스코드 취약점 진단(SAST) | 기민수 포트폴리오</title><meta name="description" content="정적분석으로 후보를 좁히고 LLM 검증은 필요한 곳에만 쓰는 소스코드 취약점 스캐너입니다. 결과를 SARIF 2.1.0으로 내보내 GitHub Actions에 붙였습니다.">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="../site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="../index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="../index.html#projects">프로젝트</a><a href="../index.html#career">경력과 자격</a><a href="../resume-ko.pdf">이력서 PDF</a><a href="../portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="crumb"><a href="../index.html#g-ai">← 프로젝트 목록</a></div>
+<header class="p-head"><div class="grp">AI 보안 프로젝트</div><h1>ETK-Scanner</h1><p class="sub">비용 상한이 있는 LLM 기반 소스코드 취약점 진단(SAST)</p><p class="one">정적분석으로 후보를 좁히고 LLM 검증은 필요한 곳에만 쓰는 소스코드 취약점 스캐너입니다. 결과를 SARIF 2.1.0으로 내보내 GitHub Actions에 붙였습니다.</p>
+<p class="repo">저장소 <a href="https://github.com/ki0915/etk-scanner">github.com/ki0915/etk-scanner</a></p></header>
+<div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>함수마다 비싼 LLM을 부르면 비용이 너무 크고, 정적분석만으로는 권한 우회 같은 로직 결함을 놓칩니다. 그래서 Python AST와 JS/TS 패턴으로 후보를 좁힌 뒤 저비용 모델, 고비용 모델 순으로 검증하고 예산 상한 전에 멈추는 스캐너를 만들어 SARIF 2.1.0으로 GitHub Actions에 연결했습니다. 이 스캐너를 활용해 오픈소스의 인가 처리 문제를 제보했고, 유지관리자에게서 영향이 있다는 확인과 함께 고치겠다는 답을 받았습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2026.07</td></tr><tr><th scope="row">역할</th><td>파이프라인 설계, 구현, 검증 (1인)</td></tr><tr><th scope="row">환경</th><td>개인 프로젝트</td></tr><tr><th scope="row">기술</th><td>Python, Python AST, JS/TS 정규식 분석, Claude API, SARIF 2.1.0, GitHub Actions, Node.js</td></tr><tr><th scope="row">저장소</th><td><a href="https://github.com/ki0915/etk-scanner">github.com/ki0915/etk-scanner</a></td></tr></table></section></div>
+<article class="body">
+<h2>배경</h2>
+<p>비용 대비 효율이 좋은 취약점 진단 도구를 만들고 싶었습니다. 위험 함수(eval, exec) 호출만 찾는 규칙 기반 도구는 권한 우회나 검증 우회처럼 위험 함수 없이 생기는 결함을 잡지 못합니다. 반대로 모든 함수를 LLM에 보내면 비용 때문에 CI에 붙일 수가 없습니다.</p>
+
+<h2>한 일</h2>
+<h3>단계형 파이프라인</h3>
+<dl class="steps">
+<dt>정적 탐지</dt><dd>Python은 AST로, JavaScript와 TypeScript는 정규식으로 후보를 뽑습니다. 이 단계는 토큰을 쓰지 않습니다.</dd>
+<dt>단일턴 분류</dt><dd>저비용 모델이 후보를 한 번 거릅니다.</dd>
+<dt>멀티턴 검증</dt><dd>남은 소수만 고비용 모델이 여러 차례 문맥을 확인하며 검증합니다.</dd>
+<dt>보안 영향 필터</dt><dd>기능 버그와 보안 결함을 나누고, LLM의 분류와 실제로 악용할 수 있는지를 구분해 표시합니다.</dd>
+<dt>기록과 출력</dt><dd>모든 API 호출 비용을 cost.json에 기록하고, 설정한 예산을 넘길 것 같으면 그 전에 멈춥니다.</dd>
+</dl>
+<p>후보를 고를 때는 위험 함수만 보지 않고, validate나 auth처럼 보안 판단을 하는 함수를 함께 잡습니다. 권한 우회나 검증 우회는 위험 함수 호출 없이도 생기기 때문입니다.</p>
+<h3>CI 연동</h3>
+<p>탐지 결과의 CWE, 심각도, 파일과 행 위치를 SARIF 2.1.0으로 변환해 GitHub Security 탭에 올립니다. GitHub Actions에서는 PR과 push마다 토큰을 쓰지 않는 정적 모드만 돌고, LLM 모드는 수동으로 실행합니다. 검사 뒤 SARIF를 업로드하고, 심각도 high 결과가 나오면 GitHub Actions job이 실패하는 게이트를 두었습니다.</p>
+<h3>하드코딩된 JWT 키 재현</h3>
+<p>직접 만든 TypeScript 실습 백엔드를 검사하자 정적 단계에서 소스에 박힌 JWT 서명 키(CWE-798)가 잡혔습니다. 이 키를 알면 누구나 토큰을 위조할 수 있습니다. 재현 환경에 실제 HTTP 서버를 띄우고, 키를 환경변수로 옮기기 전과 후를 비교했습니다.</p>
+<div class="tbl"><table><tr class="hd"><th>요청</th><th>수정 전</th><th>수정 후 (환경변수 키)</th></tr>
+<tr><td data-label="요청">토큰 없음</td><td data-label="수정 전" class="num">401</td><td data-label="수정 후 (환경변수 키)" class="num">401</td></tr>
+<tr><td data-label="요청">유출된 키로 위조한 토큰</td><td data-label="수정 전" class="num"><b>200</b>, 보호 데이터 노출</td><td data-label="수정 후 (환경변수 키)" class="num">401 차단</td></tr></table></div>
+<h3>오픈소스 인가 결함 제보</h3>
+<p>이 스캐너를 활용해 한 오픈소스 프로젝트의 인가 처리 문제를 소스 수준에서 분석하고, 재현 자료와 원인 분석을 유지관리자에게 보냈습니다. 특정 버전에 영향이 있고 그 버전에서 수정할 예정이라는 회신을 받았습니다. 아직 공개 전이라 프로젝트 이름과 세부 내용은 적지 않습니다.</p>
+
+<h2>결과</h2>
+<div class="tbl"><table><tr class="hd"><th>지표</th><th>값</th></tr>
+<tr><td data-label="지표">SecurityEval 취약 코드 탐지</td><td data-label="값" class="num">111/121 (재현율 91.7%)</td></tr>
+<tr><td data-label="지표">탐지한 것 중 CWE 유형까지 맞춘 비율</td><td data-label="값" class="num">37.8%</td></tr>
+<tr><td data-label="지표">정밀도, 오탐률</td><td data-label="값">측정하지 못함</td></tr></table></div>
+<p>SecurityEval에는 안전한 코드 표본이 없어서, 전부 취약하다고 답해도 재현율이 높게 나옵니다. 그래서 CWE 유형까지 맞춘 비율을 함께 적었고, 다음 단계로 안전 표본을 붙여 오탐률을 재려고 합니다.</p>
+<p class="note">CI job을 실패시키는 설정까지 했고, 보호 브랜치 규칙으로 실제 병합을 막는 설정은 확인하지 않았습니다. 제보 건은 유지관리자의 영향 확인과 수정 예정 회신까지이며, 패치 배포나 CVE 발급, 공개 발견자 등재는 아직 확인되지 않았습니다.</p>
+</article>
+<nav class="pager" aria-label="다른 프로젝트"><a href="mcp-guard.html"><small>이전 프로젝트</small>Mcp-Guard</a><a class="next" href="evidscope.html"><small>다음 프로젝트</small>EvidScope</a></nav>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:kiminsoo365@gmail.com">kiminsoo365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>

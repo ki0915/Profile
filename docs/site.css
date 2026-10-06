@@ -1,0 +1,143 @@
+/* v7 웹 포트폴리오: 이력서·포트폴리오 PDF와 같은 서식 */
+@font-face{font-family:Pretendard;font-weight:400;font-display:swap;src:url(fonts/Pretendard-Regular.woff2) format("woff2")}
+@font-face{font-family:Pretendard;font-weight:500;font-display:swap;src:url(fonts/Pretendard-Medium.woff2) format("woff2")}
+@font-face{font-family:Pretendard;font-weight:600;font-display:swap;src:url(fonts/Pretendard-SemiBold.woff2) format("woff2")}
+@font-face{font-family:"Serif KR";font-weight:600;font-display:swap;src:url(fonts/noto-serif-kr-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-024F,U+2000-206F}
+@font-face{font-family:"Serif KR";font-weight:600;font-display:swap;src:url(fonts/noto-serif-kr-korean-600-normal.woff2) format("woff2");unicode-range:U+1100-11FF,U+3000-303F,U+3130-318F,U+AC00-D7AF,U+00B7}
+@font-face{font-family:"Serif KR";font-weight:700;font-display:swap;src:url(fonts/noto-serif-kr-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-024F,U+2000-206F}
+@font-face{font-family:"Serif KR";font-weight:700;font-display:swap;src:url(fonts/noto-serif-kr-korean-700-normal.woff2) format("woff2");unicode-range:U+1100-11FF,U+3000-303F,U+3130-318F,U+AC00-D7AF,U+00B7}
+@font-face{font-family:"Plex Mono";font-weight:400;font-display:swap;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
+
+:root{--ink:#141414;--text:#2b2b2b;--gray:#666;--light:#a6a6a6;--hair:#dcdcdc;--wash:#eef1f7;--accent:#1f3a68}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--text);font-family:Pretendard,system-ui,sans-serif;font-size:17px;line-height:1.72;
+  word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:var(--light);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--ink)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p{margin:0 0 .9em}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:16px;top:12px;background:#fff;padding:6px 10px;z-index:10}
+
+/* 머리 줄 */
+.bar{border-bottom:1px solid var(--hair)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;min-height:58px;gap:16px;flex-wrap:wrap}
+.bar .me{font-family:"Serif KR",serif;font-weight:700;font-size:19px;color:var(--ink);text-decoration:none}
+.bar nav{display:flex;gap:20px;flex-wrap:wrap;font-size:14.5px}
+.bar nav a{text-decoration:none;color:#444}
+.bar nav a:hover{color:var(--ink);text-decoration:underline}
+
+h1,h2{font-family:"Serif KR",serif;color:var(--ink);text-wrap:balance}
+
+/* 첫 화면 */
+.hero{padding:64px 0 24px}
+.hero .what{font-size:14px;color:var(--gray);margin:0 0 18px}
+.hero h1{margin:0;font-size:48px;line-height:1.15;font-weight:700;letter-spacing:.02em}
+.hero h1 span{margin-left:16px;font-family:Pretendard;font-size:17px;font-weight:400;color:var(--gray);letter-spacing:0}
+.hero .intro{margin-top:26px;max-width:720px;font-size:18px;color:#333}
+.hero .links{margin-top:22px;font-size:15px;color:var(--gray)}
+.sep{color:#c8c8c8;margin:0 10px}
+
+/* 섹션 */
+.sec{margin-top:48px}
+.sec>h2{margin:0 0 18px;padding-bottom:8px;border-bottom:1px solid var(--ink);font-size:24px;font-weight:600}
+
+/* 표 공통: 위아래 굵은 선, 세로선 없음 */
+table{width:100%;border-collapse:collapse}
+table.toc{border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);font-size:15.5px;line-height:1.6}
+table.toc th{text-align:left;font-weight:500;font-size:13px;color:var(--gray);padding:9px 16px 8px 0;border-bottom:1px solid var(--ink)}
+table.toc td{padding:14px 16px 14px 0;vertical-align:top;border-top:1px solid var(--hair)}
+table.toc tr.grp td{padding-top:26px;border-top:1px solid var(--ink);font-family:"Serif KR",serif;font-weight:600;font-size:17px;color:var(--ink)}
+table.toc tr.grp td span{display:block;margin-top:4px;font-family:Pretendard;font-weight:400;font-size:14px;color:var(--gray)}
+table.toc tbody tr.grp:first-child td{border-top:0}
+table.toc td.name{width:30%}
+table.toc td.name a{font-weight:600;color:var(--ink)}
+table.toc td.name small{display:block;font-size:13.5px;color:var(--gray);margin-top:2px}
+table.toc td.d,table.toc td.s{white-space:nowrap;font-size:14px;color:var(--gray);padding-right:0}
+table.toc td.d{padding-right:16px}
+
+.job{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.job b{font-weight:600;font-size:18px;color:var(--ink)}
+.date{font-size:14.5px;color:var(--gray);white-space:nowrap}
+.role{margin:2px 0 8px;color:var(--gray);font-size:15px}
+.ctx{max-width:760px}
+table.facts{margin-top:18px;font-size:15.5px}
+table.facts th,table.facts td{padding:3px 0;text-align:left;vertical-align:baseline}
+table.facts th{width:64px;font-weight:500;color:var(--ink)}
+table.facts td.o{color:var(--gray);font-size:14.5px;padding-left:16px}
+table.facts td.d{width:80px;text-align:right;color:var(--gray);font-size:14.5px}
+table.facts tr.gap th,table.facts tr.gap td{padding-top:14px}
+
+footer{margin-top:72px;padding-top:18px;padding-bottom:40px;border-top:1px solid var(--hair);font-size:14px;color:var(--gray)}
+
+/* 상세 페이지 */
+.crumb{margin-top:28px;font-size:14px}
+.crumb a{color:var(--gray)}
+.p-head{margin-top:22px}
+.p-head .grp{font-size:14px;color:var(--accent);font-weight:500}
+.p-head h1{margin:6px 0 0;font-size:36px;line-height:1.3;font-weight:600}
+.p-head .sub{margin:6px 0 0;font-size:17px;color:var(--gray)}
+.p-head .one{margin:18px 0 0;max-width:760px;font-size:18px;color:#333}
+.repo{margin:14px 0 0;font-size:15px;color:var(--gray)}
+.repo a{color:var(--ink)}
+
+.overview{display:grid;grid-template-columns:1.45fr 1fr;gap:40px;margin-top:40px;align-items:start}
+.overview h2{margin:0 0 12px;font-size:20px;font-weight:600}
+.summary p{font-size:17px}
+.spec h2{padding-bottom:6px;border-bottom:1.5px solid var(--ink);margin-bottom:0}
+.spec table{border-bottom:1.5px solid var(--ink);font-size:14.5px;line-height:1.55}
+.spec th,.spec td{padding:9px 0;vertical-align:top;text-align:left;border-top:1px solid var(--hair)}
+.spec tr:first-child th,.spec tr:first-child td{border-top:0}
+.spec th{width:64px;font-weight:400;color:var(--gray)}
+.spec td{color:var(--ink)}
+
+.body{margin-top:48px;max-width:780px}
+.body h2{margin:44px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--ink);font-size:22px;font-weight:600}
+.body h3{margin:28px 0 8px;font-size:17.5px;font-weight:600;color:var(--ink)}
+.body ul,.body ol{margin:0 0 1em;padding-left:1.2em}
+.body li{margin:.3em 0}
+.body ul li::marker{color:var(--light)}
+dl.steps{margin:0 0 1em;display:grid;grid-template-columns:110px 1fr;gap:12px 20px}
+dl.steps dt{font-weight:600;color:var(--ink)}
+dl.steps dd{margin:0}
+.tbl{overflow-x:auto;margin:6px 0 18px}
+.tbl table{border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);font-size:15px;line-height:1.55}
+.tbl tr.hd td,.tbl th{text-align:left;font-weight:500;font-size:13.5px;color:var(--gray);padding:8px 16px 7px 0;border-bottom:1px solid var(--ink)}
+.tbl td{padding:9px 16px 9px 0;vertical-align:top;border-top:1px solid var(--hair)}
+.tbl tr:nth-child(2) td{border-top:0}
+.note{font-size:14px;color:var(--gray)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+pre,code{font-family:"Plex Mono",ui-monospace,monospace;font-size:14px}
+pre{background:var(--wash);padding:14px 18px;overflow-x:auto;line-height:1.6}
+figure{margin:18px 0 22px}
+figure img{width:100%;height:auto;display:block;border:0}
+figcaption{margin-top:8px;font-size:14px;color:var(--gray)}
+
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px;padding-top:18px;border-top:1px solid var(--ink)}
+.pager a{text-decoration:none;color:var(--ink);font-weight:500}
+.pager a small{display:block;font-weight:400;font-size:13.5px;color:var(--gray)}
+.pager a.next{text-align:right}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  .hero{padding-top:40px}
+  .hero h1{font-size:38px}
+  .hero h1 span{display:block;margin:8px 0 0}
+  .overview{grid-template-columns:1fr;gap:28px}
+  .p-head h1{font-size:28px}
+  table.toc thead{display:none}
+  table.toc tr{display:block;border-top:1px solid var(--hair);padding:12px 0}
+  table.toc tr.grp{border-top:1px solid var(--ink)}
+  table.toc td{display:block;border:0;padding:2px 0}
+  table.toc td.name{width:auto}
+  table.toc td.d,table.toc td.s{display:inline-block;margin-right:12px}
+  dl.steps{grid-template-columns:1fr;gap:2px}
+  dl.steps dd{margin-bottom:10px}
+  .tbl table{font-size:14px}
+  .pager{grid-template-columns:1fr}
+  .pager a.next{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+.body figure{width:892px;max-width:calc(100vw - 48px)}

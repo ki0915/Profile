@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5성급 호텔 서버 디스크 고갈 장애 대응 | 기민수 포트폴리오</title><meta name="description" content="배포할 때마다 Docker 이미지와 중지된 컨테이너가 쌓여 디스크가 가득 찼고, 서비스가 멈췄습니다. 원인을 확인해 정리한 뒤 cron으로 주기 정리를 자동화했습니다.">
+<meta name="author" content="기민수 (Ki Minsoo)"><meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="../site.css"></head><body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="bar"><div class="wrap">
+<a class="me" href="../index.html">기민수</a>
+<nav aria-label="주요 메뉴"><a href="../index.html#projects">프로젝트</a><a href="../index.html#career">경력과 자격</a><a href="../resume-ko.pdf">이력서 PDF</a><a href="../portfolio.pdf">포트폴리오 PDF</a></nav>
+</div></header>
+<main id="main" class="wrap">
+<div class="crumb"><a href="../index.html#g-work">← 프로젝트 목록</a></div>
+<header class="p-head"><div class="grp">실무 트러블슈팅</div><h1>5성급 호텔 서버 디스크 고갈 장애 대응</h1><p class="one">배포할 때마다 Docker 이미지와 중지된 컨테이너가 쌓여 디스크가 가득 찼고, 서비스가 멈췄습니다. 원인을 확인해 정리한 뒤 cron으로 주기 정리를 자동화했습니다.</p>
+<p class="repo off">고객사 운영 업무라 공개 저장소가 없습니다. 이 장애를 재현한 실험은 보안 운영 랩에 있습니다.</p></header>
+<div class="overview"><section class="summary" aria-labelledby="sum-h"><h2 id="sum-h">요약</h2><p>5성급 호텔 고객사 서버에서 배포마다 쌓인 Docker 이미지와 중지된 컨테이너가 디스크를 채워 서비스가 멈췄습니다. 원인을 확인해 정리하고 서비스를 다시 올린 뒤, 같은 정리를 cron으로 자동화했습니다. 정리 절차와 서버 점검 표준은 문서로 남겼습니다.</p></section><section class="spec" aria-labelledby="spec-h"><h2 id="spec-h">명세</h2><table><tr><th scope="row">기간</th><td>2023.04 – 2025.03 재직 중</td></tr><tr><th scope="row">역할</th><td>장애 원인 확인, 정리와 자동화, 운영 문서 작성</td></tr><tr><th scope="row">환경</th><td>5성급 호텔 고객사 Ubuntu 서버, SSL VPN 원격 관리</td></tr><tr><th scope="row">기술</th><td>Docker, cron, Grafana, Prometheus, Ubuntu, MariaDB</td></tr><tr><th scope="row">저장소</th><td>해당 없음 (실무, 소스 비공개)</td></tr></table></section></div>
+<article class="body">
+<h2>배경</h2>
+<p>이 고객사 서버는 Ubuntu 위에서 Docker 컨테이너로 서비스를 돌렸습니다. 관리자 페이지와 DB, 서버 상태는 SSL VPN으로 접속해 점검했고, Grafana와 Prometheus 지표가 임계치에 가까워지면 미리 조치해 왔습니다.</p>
+<p>그러다 서비스가 멈췄습니다. 확인해 보니 서버 디스크가 가득 차 있었습니다.</p>
+
+<h2>한 일</h2>
+<dl class="steps">
+<dt>원인 확인</dt><dd>배포 때마다 남은 미사용 Docker 이미지와 중지된 컨테이너를 원인으로 확인했습니다.</dd>
+<dt>정리와 복구</dt><dd>중지된 컨테이너와 쓰지 않는 이미지를 지워 공간을 확보하고 서비스를 다시 올렸습니다.</dd>
+<dt>자동화</dt><dd>같은 정리 작업을 cron에 등록해, 사람이 챙기지 않아도 주기적으로 돌게 했습니다.</dd>
+<dt>문서화</dt><dd>로그와 Docker 이미지 정리 절차, 서버 점검 표준을 문서로 남겼습니다.</dd>
+</dl>
+<h3>별개 장애: MariaDB 로그 누적</h3>
+<p>디스크 고갈과는 다른 사건으로, 고객사 운영 중 MariaDB 로그가 쌓여 생긴 장애도 해결했습니다. 지원이 끝난 Ubuntu 18.04 서버는 22.04로 업그레이드했습니다.</p>
+
+<h2>결과</h2>
+<ul>
+<li>정리 작업이 cron으로 주기 실행되면서, 같은 원인으로 디스크가 차서 서비스가 멈추는 일을 막았습니다.</li>
+<li>정리 절차와 서버 점검 표준을 문서로 남겨 점검 순서를 맞췄습니다.</li>
+</ul>
+<h3>퇴사 뒤 다시 해 본 것</h3>
+<p>퇴사 뒤 이 장애를 1GiB 디스크로 재현해, 롤백용 이미지는 지키면서 디스크 사용률에 따라 단계적으로 정리하는 방식으로 다시 만들어 봤습니다. 결과는 <a href="security-ops-lab.html">보안 운영 랩</a>에 정리했습니다.</p>
+<p class="note">디스크 용량, 정리 전후 사용률, cron 실행 주기는 기록이 남아 있지 않아 숫자로 적지 않았습니다.</p>
+</article>
+<nav class="pager" aria-label="다른 프로젝트"><a href="backup-servers.html"><small>이전 프로젝트</small>서버 7대 통합과 백업 재설계 (BCP/DR)</a><a class="next" href="mcp-guard.html"><small>다음 프로젝트</small>Mcp-Guard</a></nav>
+</main>
+<footer class="wrap">기민수 · <a href="mailto:kiminsoo365@gmail.com">kiminsoo365@gmail.com</a> · <a href="https://github.com/ki0915">github.com/ki0915</a> · <a href="https://www.linkedin.com/in/minsoo-ki-388b2437b">LinkedIn</a></footer>
+</body></html>
