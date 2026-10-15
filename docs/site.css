@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--text);font-family:Pretendard,system-ui,sans-serif;font-size:17px;line-height:1.72;
-  word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;font-variant-numeric:tabular-nums}
+  word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;font-variant-numeric:normal}
 a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:var(--light);text-underline-offset:3px}
 a:hover{text-decoration-color:var(--ink)}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -108,7 +108,7 @@ dl.steps dd{margin:0}
 .tbl td{padding:9px 16px 9px 0;vertical-align:top;border-top:1px solid var(--hair)}
 .tbl tr:nth-child(2) td{border-top:0}
 .note{font-size:14px;color:var(--gray)}
-.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.num{font-variant-numeric:normal;white-space:nowrap}
 pre,code{font-family:"Plex Mono",ui-monospace,monospace;font-size:14px}
 pre{background:var(--wash);padding:14px 18px;overflow-x:auto;line-height:1.6}
 figure{margin:18px 0 22px}
