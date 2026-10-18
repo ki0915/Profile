@@ -289,3 +289,23 @@ figcaption strong{color:var(--ink);margin-right:6px}
  .print-together+.print-together{margin-top:6mm;padding-top:6mm;border-top:1px solid var(--line)}
 }
 .diff-item{display:flex;align-items:center}
+
+/* 2차 다듬기 (2026-10-18): 한눈에 띠, 첫 화면 소개 위계, 따라오는 구획 이름 */
+.hero-intro .thesis{font-size:clamp(19px,2vw,22px);line-height:1.6;color:var(--ink);font-weight:600;letter-spacing:-.015em}
+.hero-intro p:not(.thesis){font-size:15.5px;color:var(--muted)}
+.glance{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:0;margin:0 0 28px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.glance>div{padding:18px 20px}
+.glance>div+div{border-left:1px solid var(--line)}
+.glance span{display:block;margin-bottom:6px;font-size:12.5px;font-weight:700;color:var(--signal)}
+.glance p{margin:0;font-size:15px;line-height:1.6}
+.glance-result{background:var(--after-soft)}
+.glance-result span{color:var(--after)}
+.glance-result p+p{margin-top:6px}
+.glance-result b{font-weight:600;color:var(--ink-2)}
+.rail li{position:relative;z-index:1}
+.rail::before,.rail::after{z-index:0}
+@media (min-width:901px){.detail section>h2{position:sticky;top:76px;align-self:start}}
+@media (max-width:900px){.glance{grid-template-columns:1fr}.glance>div+div{border-left:0;border-top:1px solid var(--line)}}
+@media print{.glance{margin:0 0 4mm}.glance>div{padding:3mm 4mm}.glance p{font-size:9pt}.detail section>h2{position:static}.hero-intro .thesis{font-size:12pt}.hero-intro p:not(.thesis){font-size:9.4pt}}
+@media print{.demos{grid-template-columns:1fr 1fr;gap:4mm}.shot img{max-height:70mm}.hero-shot .shot img{max-height:85mm}.term pre{font-size:7pt;padding:3mm}figcaption{font-size:8pt;padding:2mm 3mm}}
+@media print{.glance{grid-template-columns:1fr 1fr 1.15fr}.glance>div+div{border-top:0;border-left:1px solid var(--line)}.meta{gap:2mm 8mm}}
